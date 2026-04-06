@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Software — Wanjun Gu</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --accent:  #5e60ce;
+      --dark:    #1c1c1e;
+      --mid:     #4a4a52;
+      --light:   #8a8a96;
+      --border:  #dcdce4;
+      --bg:      #f7f6f3;
+      --sidebar: 220px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      line-height: 1.7;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2.5rem;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      backdrop-filter: blur(8px);
+    }
+
+    .nav-name {
+      font-size: 1rem;
+      font-weight: bold;
+      color: var(--dark);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+    }
+
+    /* ── LAYOUT ── */
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 3.5rem 2.5rem 7rem;
+      display: grid;
+      grid-template-columns: var(--sidebar) 1fr;
+      gap: 0 4rem;
+      align-items: start;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      position: sticky;
+      top: 72px;
+    }
+
+    .profile-photo {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      object-position: top center;
+      border-radius: 3px;
+      display: block;
+      filter: saturate(0.88);
+    }
+
+    .profile-meta {
+      margin-top: 1.1rem;
+    }
+
+    .profile-name {
+      font-size: 1.05rem;
+      font-weight: bold;
+      color: var(--dark);
+    }
+
+    .profile-role {
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--light);
+      margin-top: 0.25rem;
+    }
+
+    /* ── SIDEBAR NAV ── */
+    .site-nav {
+      margin: 1.4rem 0 1.5rem;
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .site-nav a {
+      font-size: 0.82rem;
+      color: var(--mid);
+      text-decoration: none;
+      padding: 0.32rem 0 0.32rem 0.9rem;
+      border-left: 2px solid transparent;
+      margin-left: -1px;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .site-nav a:hover { color: var(--accent); }
+
+    .site-nav a.active {
+      color: var(--accent);
+      border-left-color: var(--accent);
+      font-weight: bold;
+    }
+
+    /* ── PROFILE LINKS ── */
+    .profile-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.42rem;
+      list-style: none;
+    }
+
+    .profile-links a {
+      font-size: 0.78rem;
+      color: var(--mid);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.18s;
+    }
+
+    .profile-links a::before {
+      content: '';
+      display: inline-block;
+      width: 12px;
+      height: 1px;
+      background: var(--border);
+      flex-shrink: 0;
+      transition: width 0.2s, background 0.2s;
+    }
+
+    .profile-links a:hover { color: var(--accent); }
+    .profile-links a:hover::before { background: var(--accent); width: 18px; }
+
+    /* ── MAIN ── */
+    main { min-width: 0; }
+
+    section {
+      opacity: 0;
+      transform: translateY(8px);
+      animation: rise 0.4s ease forwards 0.05s;
+    }
+
+    @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+    .section-header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.6rem;
+      margin-bottom: 0;
+    }
+
+    .sec-title {
+      font-size: 1rem;
+      font-weight: bold;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--dark);
+    }
+
+    /* ── SOFTWARE LIST ── */
+    .software-item {
+      display: grid;
+      grid-template-columns: 2.25rem 1fr;
+      gap: 0 1.25rem;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sw-num {
+      font-size: 0.78rem;
+      color: var(--accent);
+      text-align: right;
+      padding-top: 0.2em;
+      font-weight: bold;
+    }
+
+    .sw-body {
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+    }
+
+    .sw-content { flex: 1; min-width: 0; }
+
+    .sw-thumb {
+      width: 72px;
+      height: 72px;
+      flex-shrink: 0;
+      object-fit: contain;
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid var(--border);
+      padding: 6px;
+    }
+
+    .sw-name {
+      font-size: 1rem;
+      font-weight: bold;
+      line-height: 1.2;
+      display: flex;
+      align-items: baseline;
+      gap: 0.65rem;
+      margin-bottom: 0.45rem;
+    }
+
+    .sw-tag {
+      font-size: 0.65rem;
+      font-weight: normal;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--light);
+    }
+
+    .sw-desc {
+      font-size: 0.86rem;
+      color: var(--mid);
+      line-height: 1.78;
+      margin-bottom: 0.75rem;
+    }
+
+    .sw-link {
+      font-size: 0.72rem;
+      font-weight: bold;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: gap 0.18s;
+    }
+    .sw-link::after { content: '→'; font-weight: normal; }
+    .sw-link:hover { gap: 0.65rem; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 660px) {
+      .page {
+        grid-template-columns: 1fr;
+        padding: 2rem 1.25rem 5rem;
+        gap: 2rem 0;
+      }
+      .sidebar { position: static; }
+      .profile-photo { max-width: 150px; }
+      header { padding: 0 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="nav-name" href="index.html">Wanjun Gu</a>
+  </header>
+
+  <div class="page">
+    <aside class="sidebar">
+      <img class="profile-photo" src="pictures/wanjun.jpg" alt="Wanjun Gu">
+      <div class="profile-meta">
+        <div class="profile-name">Wanjun Gu</div>
+        <div class="profile-role">PhD · Bioinformatics · UCSF</div>
+        <nav class="site-nav">
+          <a href="index.html">About</a>
+          <a href="software.html" class="active">Software</a>
+          <a href="Wanjun Gu CV.pdf" target="_blank">CV</a>
+        </nav>
+        <ul class="profile-links">
+          <li><a href="mailto:wanjun.gu@ucsf.edu">Email</a></li>
+          <li><a href="https://scholar.google.com/citations?hl=en&user=RLSWT98AAAAJ">Google Scholar</a></li>
+          <li><a href="https://www.researchgate.net/profile/Wanjun-Gu">ResearchGate</a></li>
+          <li><a href="https://github.com/Broccolito">GitHub</a></li>
+          <li><a href="https://twitter.com/WanjunGu1">Twitter</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <main>
+      <section>
+        <div class="section-header">
+          <h2 class="sec-title">Software</h2>
+        </div>
+
+        <div class="software-item">
+          <span class="sw-num">01</span>
+          <div class="sw-body">
+            <div class="sw-content">
+              <div class="sw-name">tKOI <span class="sw-tag">R package</span></div>
+              <p class="sw-desc">Transcriptomic Knowledge-graph-driven Omics Integration for Human Pathway Analysis. Combines transcriptomic data with a human-specific biological knowledge graph for network-aware enrichment, functional interpretation, and gene prioritization via personalized PageRank.</p>
+              <a class="sw-link" href="https://broccolito.github.io/software/tkoi/index.html" target="_blank">Documentation</a>
+            </div>
+            <img class="sw-thumb" src="pictures/tkoi-logo.png" alt="tKOI logo">
+          </div>
+        </div>
+
+        <div class="software-item">
+          <span class="sw-num">02</span>
+          <div class="sw-body">
+            <div class="sw-content">
+              <div class="sw-name">pKOI <span class="sw-tag">R package</span></div>
+              <p class="sw-desc">Proteomic Knowledge-graph-driven Omics Integration. A network-based enrichment analysis tool integrating differential proteomics data with a heterogeneous biological knowledge graph, using personalized PageRank to prioritize genes, diseases, pathways, and cell types.</p>
+              <a class="sw-link" href="https://broccolito.github.io/software/pkoi/index.html" target="_blank">Documentation</a>
+            </div>
+            <img class="sw-thumb" src="pictures/pkoi-logo.png" alt="pKOI logo">
+          </div>
+        </div>
+
+        <div class="software-item">
+          <span class="sw-num">03</span>
+          <div class="sw-body">
+            <div class="sw-content">
+              <div class="sw-name">KDPS <span class="sw-tag">R package</span></div>
+              <p class="sw-desc">Kinship Decouple and Phenotype Selection. Resolves cryptic relatedness in genetic studies using a phenotype-aware approach, retaining subjects with relevant traits while pruning related individuals based on kinship or IBD scores.</p>
+              <a class="sw-link" href="https://ucsd-salem-lab.github.io/kdps/" target="_blank">Documentation</a>
+            </div>
+            <img class="sw-thumb" src="pictures/kdps-logo.png" alt="KDPS logo">
+          </div>
+        </div>
+
+        <div class="software-item">
+          <span class="sw-num">04</span>
+          <div class="sw-body">
+            <div class="sw-content">
+              <div class="sw-name">ggmugs <span class="sw-tag">CRAN</span></div>
+              <p class="sw-desc">A grammar-of-graphics approach for visualizing summary statistics from multiple GWAS datasets. Offers flexible, extensively customizable tools for illustrating complex genetic associations and comparative analysis across studies.</p>
+              <a class="sw-link" href="https://cran.r-project.org/web/packages/ggmugs/index.html" target="_blank">View on CRAN</a>
+            </div>
+            <img class="sw-thumb" src="pictures/ggmugs-logo.png" alt="ggmugs logo">
+          </div>
+        </div>
+
+        <div class="software-item">
+          <span class="sw-num">05</span>
+          <div class="sw-body">
+            <div class="sw-content">
+              <div class="sw-name">bolt4jr <span class="sw-tag">CRAN</span></div>
+              <p class="sw-desc">Interface for the Neo4j Bolt Protocol. Enables querying, extracting, and processing large-scale network data from Neo4j databases with efficient retrieval, batch processing, and seamless conversion to R data frames.</p>
+              <a class="sw-link" href="https://cran.r-project.org/web/packages/bolt4jr/index.html" target="_blank">View on CRAN</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="software-item">
+          <span class="sw-num">06</span>
+          <div class="sw-body">
+            <div class="sw-content">
+              <div class="sw-name">gptr <span class="sw-tag">CRAN</span></div>
+              <p class="sw-desc">An R interface with the ChatGPT API. Provides a convenient, accessible bridge to OpenAI's language models for natural language processing tasks within the R ecosystem.</p>
+              <a class="sw-link" href="https://cran.r-project.org/web/packages/gptr/index.html" target="_blank">View on CRAN</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="software-item">
+          <span class="sw-num">07</span>
+          <div class="sw-body">
+            <div class="sw-content">
+              <div class="sw-name">BioRouter <span class="sw-tag">UCSF</span></div>
+              <p class="sw-desc">An AI-powered integrated research environment that unifies commercial, institution-hosted, and local AI models for secure biomedical discovery. Enables researchers to coordinate AI agents across clinical databases, biomedical knowledge graphs, and literature while maintaining full data security.</p>
+              <a class="sw-link" href="https://baranzinilab.github.io/biorouter-landing/intro.html" target="_blank">Learn More</a>
+            </div>
+            <img class="sw-thumb" src="pictures/biorouter-logo.png" alt="BioRouter logo">
+          </div>
+        </div>
+
+        <div class="software-item">
+          <span class="sw-num">08</span>
+          <div class="sw-body">
+            <div class="sw-content">
+              <div class="sw-name">MedCP <span class="sw-tag">GitHub</span></div>
+              <p class="sw-desc">Transforms Claude Desktop into a medical AI assistant with secure, local access to electronic health records and biomedical knowledge graphs. Allows healthcare professionals and researchers to process sensitive patient data on-device while leveraging comprehensive medical knowledge for clinical decision support.</p>
+              <a class="sw-link" href="https://github.com/BaranziniLab/MedCP" target="_blank">View on GitHub</a>
+            </div>
+            <img class="sw-thumb" src="pictures/medcp-logo.png" alt="MedCP logo">
+          </div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+</body>
+</html>

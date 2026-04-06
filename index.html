@@ -4,177 +4,245 @@
   <title>Wanjun Gu</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  
-  <!-- Bootstrap 5 -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Open+Sans&display=swap" rel="stylesheet">
-
   <style>
+    :root {
+      --accent:  #5e60ce;
+      --dark:    #1c1c1e;
+      --mid:     #4a4a52;
+      --light:   #8a8a96;
+      --border:  #dcdce4;
+      --bg:      #f7f6f3;
+      --sidebar: 220px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      font-family: 'Open Sans', sans-serif;
-      background-color: #f8f9fa;
-      padding-bottom: 60px;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      line-height: 1.7;
     }
-    .navbar {
-      background-color: #343a40;
+
+    /* ── HEADER ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2.5rem;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      backdrop-filter: blur(8px);
     }
-    .navbar-nav .nav-link {
-      color: #ffffff !important;
-      font-weight: 500;
-    }
-    .profile-name {
-      font-family: 'Oswald', sans-serif;
-      font-size: 2rem;
+
+    .nav-name {
+      font-size: 1rem;
       font-weight: bold;
-      color: #212529;
-    }
-    .profile-img {
-      border-radius: 10px;
-      max-width: 100%;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-    .sidebar-links a {
-      display: block;
-      color: #007bff;
+      color: var(--dark);
       text-decoration: none;
-      margin-bottom: 8px;
+      letter-spacing: 0.01em;
     }
-    .sidebar-links a:hover {
+
+    /* ── LAYOUT ── */
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 3.5rem 2.5rem 7rem;
+      display: grid;
+      grid-template-columns: var(--sidebar) 1fr;
+      gap: 0 4rem;
+      align-items: start;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      position: sticky;
+      top: 72px;
+    }
+
+    .profile-photo {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      object-position: top center;
+      border-radius: 3px;
+      display: block;
+      filter: saturate(0.88);
+    }
+
+    .profile-meta {
+      margin-top: 1.1rem;
+    }
+
+    .profile-name {
+      font-size: 1.05rem;
+      font-weight: bold;
+      color: var(--dark);
+    }
+
+    .profile-role {
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--light);
+      margin-top: 0.25rem;
+    }
+
+    /* ── SIDEBAR NAV ── */
+    .site-nav {
+      margin: 1.4rem 0 1.5rem;
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .site-nav a {
+      font-size: 0.82rem;
+      color: var(--mid);
+      text-decoration: none;
+      padding: 0.32rem 0 0.32rem 0.9rem;
+      border-left: 2px solid transparent;
+      margin-left: -1px;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .site-nav a:hover { color: var(--accent); }
+
+    .site-nav a.active {
+      color: var(--accent);
+      border-left-color: var(--accent);
+      font-weight: bold;
+    }
+
+    /* ── PROFILE LINKS ── */
+    .profile-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.42rem;
+      list-style: none;
+    }
+
+    .profile-links a {
+      font-size: 0.78rem;
+      color: var(--mid);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.18s;
+    }
+
+    .profile-links a::before {
+      content: '';
+      display: inline-block;
+      width: 12px;
+      height: 1px;
+      background: var(--border);
+      flex-shrink: 0;
+      transition: width 0.2s, background 0.2s;
+    }
+
+    .profile-links a:hover { color: var(--accent); }
+    .profile-links a:hover::before { background: var(--accent); width: 18px; }
+
+    /* ── MAIN ── */
+    main { min-width: 0; }
+
+    section {
+      opacity: 0;
+      transform: translateY(8px);
+      animation: rise 0.4s ease forwards 0.05s;
+    }
+
+    @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+    .section-header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.6rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .sec-title {
+      font-size: 1rem;
+      font-weight: bold;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--dark);
+    }
+
+    /* ── ABOUT ── */
+    .about p {
+      font-size: 0.92rem;
+      color: var(--mid);
+      line-height: 1.85;
+      margin-bottom: 0.75rem;
+    }
+    .about p:last-child { margin-bottom: 0; }
+
+    .about a {
+      color: var(--dark);
       text-decoration: underline;
+      text-decoration-color: var(--border);
+      text-underline-offset: 3px;
+      transition: text-decoration-color 0.2s;
     }
-    .section-title {
-      margin-top: 2rem;
-      color: #343a40;
-      border-bottom: 2px solid #dee2e6;
-      padding-bottom: 0.5rem;
+    .about a:hover { text-decoration-color: var(--accent); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 660px) {
+      .page {
+        grid-template-columns: 1fr;
+        padding: 2rem 1.25rem 5rem;
+        gap: 2rem 0;
+      }
+      .sidebar { position: static; }
+      .profile-photo { max-width: 150px; }
+      header { padding: 0 1.25rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container">
-      <a class="navbar-brand" href="#">Wanjun Gu</a>
-      <div class="collapse navbar-collapse">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="Wanjun Gu CV.pdf">CV</a></li>
+  <header>
+    <a class="nav-name" href="index.html">Wanjun Gu</a>
+  </header>
+
+  <div class="page">
+    <aside class="sidebar">
+      <img class="profile-photo" src="pictures/wanjun.jpg" alt="Wanjun Gu">
+      <div class="profile-meta">
+        <div class="profile-name">Wanjun Gu</div>
+        <div class="profile-role">PhD · Bioinformatics · UCSF</div>
+        <nav class="site-nav">
+          <a href="index.html" class="active">About</a>
+          <a href="software.html">Software</a>
+          <a href="Wanjun Gu CV.pdf" target="_blank">CV</a>
+        </nav>
+        <ul class="profile-links">
+          <li><a href="mailto:wanjun.gu@ucsf.edu">Email</a></li>
+          <li><a href="https://scholar.google.com/citations?hl=en&user=RLSWT98AAAAJ">Google Scholar</a></li>
+          <li><a href="https://www.researchgate.net/profile/Wanjun-Gu">ResearchGate</a></li>
+          <li><a href="https://github.com/Broccolito">GitHub</a></li>
+          <li><a href="https://twitter.com/WanjunGu1">Twitter</a></li>
         </ul>
       </div>
-    </div>
-  </nav>
+    </aside>
 
-  <!-- Main Content -->
-  <div class="container mt-5">
-    <div class="row">
-      <!-- Sidebar -->
-      <div class="col-md-4 mb-4">
-        <div class="profile-name mb-3">Wanjun Gu</div>
-        <img class="profile-img mb-3" src="pictures/wanjun.jpg" alt="Wanjun Gu photo">
-        <div class="sidebar-links">
-          <a href="mailto:wanjun.gu@ucsf.edu">Email</a>
-          <a href="https://scholar.google.com/citations?hl=en&user=RLSWT98AAAAJ">Google Scholar</a>
-          <a href="https://www.researchgate.net/profile/Wanjun-Gu">ResearchGate</a>
-          <a href="https://github.com/Broccolito">GitHub</a>
-          <a href="https://twitter.com/WanjunGu1">Twitter</a>
+    <main>
+      <section>
+        <div class="section-header">
+          <h2 class="sec-title">About</h2>
         </div>
-      </div>
-
-      <!-- Main Section -->
-      <div class="col-md-8">
-        <section>
-          <h2 class="section-title">About Me</h2>
+        <div class="about">
           <p>I am a graduate student in the Biological and Medical Informatics PhD program at <a href="https://www.ucsf.edu/">UCSF</a> and a data scientist at <a href="https://steps2walk.org/">Steps2walk</a>.</p>
           <p>I am interested in exploring the potential of scientific computing and machine learning in the fields of genetics, medical imaging, and epidemiology.</p>
           <p>I am passionate about statistical programming and the open source initiative, therefore I love using R.</p>
-        </section>
-
-        <section>
-          <h2 class="section-title">Skill Set</h2>
-          <ul>
-            <li><strong>Programming Languages:</strong> R, Python, BASH, MATLAB, C++, Julia</li>
-            <li><strong>Web Development:</strong> R Shiny, React, JavaScript, Node.js, HTML5, CSS</li>
-            <li><strong>Project Management:</strong> Git, GitHub, Markdown</li>
-            <li><strong>Design:</strong> Illustrator, Photoshop</li>
-            <li><strong>Miscellaneous:</strong> ImageJ</li>
-          </ul>
-        </section>
-
-
-        <section>
-          <h2 class="section-title">Software</h2>
-          <div class="row row-cols-1 g-4">
-            
-            <div class="col">
-              <div class="card shadow-sm" style="background-color: #eceff1; border: 1px solid #ddd;">
-                <div class="card-body">
-                  <h5 class="card-title">tKOI</h5>
-                  <p class="card-text">The transcriptomic Knowledge-graph-driven Omics Integration for Human Pathway Analysis (tkoi) package provides an integrative framework that combines transcriptomic data with a human-specific biological knowledge graph. This enables network-aware enrichment, functional interpretation, and gene prioritization via personalized PageRank and ontology-aware annotation.</p>
-                  <a href="https://broccolito.github.io/software/tkoi/index.html" target="_blank" class="btn" style="background-color: #5e60ce; color: white;">Documentation</a>
-                </div>
-              </div>
-            </div>
-
-            <div class="col">
-              <div class="card shadow-sm" style="background-color: #eceff1; border: 1px solid #ddd;">
-                <div class="card-body">
-                  <h5 class="card-title">pKOI</h5>
-                  <p class="card-text">pKOI (Proteomic Knowledge-graph-driven Omics Integration) is a network-based enrichment analysis tool that integrates differential proteomics data with a heterogeneous biological knowledge graph. It uses a personalized PageRank algorithm to prioritize and annotate biologically relevant nodes (e.g., genes, diseases, pathways, cell types) connected to significant proteins.</p>
-                  <a href="https://broccolito.github.io/software/pkoi/index.html" target="_blank" class="btn" style="background-color: #5e60ce; color: white;">Documentation</a>
-                </div>
-              </div>
-            </div>
-
-            <div class="col">
-              <div class="card shadow-sm" style="background-color: #eceff1; border: 1px solid #ddd;">
-                <div class="card-body">
-                  <h5 class="card-title">KDPS</h5>
-                  <p class="card-text">KDPS (Kinship Decouple and Phenotype Selection) is an R package designed to resolve cryptic relatedness in genetic studies using a phenotype-aware approach. It retains subjects with relevant traits while pruning related individuals based on kinship or identity-by-descent (IBD) scores.</p>
-                  <a href="https://ucsd-salem-lab.github.io/kdps/" target="_blank" class="btn" style="background-color: #5e60ce; color: white;">Documentation</a>
-                </div>
-              </div>
-            </div>
-
-            <div class="col">
-              <div class="card shadow-sm" style="background-color: #eceff1; border: 1px solid #ddd;">
-                <div class="card-body">
-                  <h5 class="card-title">ggmugs</h5>
-                  <p class="card-text">A 'grammar of graphics' approach for visualizing summary statistics from multiple Genome-wide Association Studies (GWAS). It offers geneticists, bioinformaticians, and researchers a powerful yet flexible tool for illustrating complex genetic associations using data from various GWAS datasets. The visualizations can be extensively customized, facilitating detailed comparative analysis across different genetic studies.</p>
-                  <a href="https://cran.r-project.org/web/packages/ggmugs/index.html" target="_blank" class="btn" style="background-color: #5e60ce; color: white;">view on CRAN</a>
-                </div>
-              </div>
-            </div>
-
-            <div class="col">
-              <div class="card shadow-sm" style="background-color: #eceff1; border: 1px solid #ddd;">
-                <div class="card-body">
-                  <h5 class="card-title">bolt4jr</h5>
-                  <p class="card-text">bolt4jr: Interface for the 'Neo4j Bolt' Protocol. Querying, extracting, and processing large-scale network data from Neo4j databases using the 'Neo4j Bolt' <https://neo4j.com/docs/bolt/current/bolt/> protocol. This interface supports efficient data retrieval, batch processing for large datasets, and seamless conversion of query results into R data frames, making it ideal for bioinformatics, computational biology, and other graph-based applications.</p>
-                  <a href="https://cran.r-project.org/web/packages/bolt4jr/index.html" target="_blank" class="btn" style="background-color: #5e60ce; color: white;">view on CRAN</a>
-                </div>
-              </div>
-            </div>
-
-            <div class="col">
-              <div class="card shadow-sm" style="background-color: #eceff1; border: 1px solid #ddd;">
-                <div class="card-body">
-                  <h5 class="card-title">gptr</h5>
-                  <p class="card-text">gptr: An R Interface with the ChatGPT API. A convenient interface with the OpenAI 'ChatGPT' API <https://openai.com/api>. 'gptr' allows you to interact with 'ChatGPT', a powerful language model, for various natural language processing tasks. The 'gptr' R package makes talking to 'ChatGPT' in R super easy. It helps researchers and data folks by simplifying the complicated stuff, like asking questions and getting answers. With 'gptr', you can use 'ChatGPT' in R without any hassle, making it simpler for everyone to do cool things with language!</p>
-                  <a href="https://cran.r-project.org/web/packages/gptr/index.html" target="_blank" class="btn" style="background-color: #5e60ce; color: white;">view on CRAN</a>
-                </div>
-              </div>
-            </div>
-
-
-          </div>
-        </section>
-
-      </div>
-    </div>
+        </div>
+      </section>
+    </main>
   </div>
 
 </body>
