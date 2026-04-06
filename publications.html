@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Publications — Wanjun Gu</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --accent:  #5e60ce;
+      --dark:    #1c1c1e;
+      --mid:     #4a4a52;
+      --light:   #8a8a96;
+      --border:  #dcdce4;
+      --bg:      #f7f6f3;
+      --sidebar: 220px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      line-height: 1.7;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2.5rem;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      backdrop-filter: blur(8px);
+    }
+
+    .nav-name {
+      font-size: 1rem;
+      font-weight: bold;
+      color: var(--dark);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+    }
+
+    /* ── LAYOUT ── */
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 3.5rem 2.5rem 7rem;
+      display: grid;
+      grid-template-columns: var(--sidebar) 1fr;
+      gap: 0 4rem;
+      align-items: start;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar { position: sticky; top: 72px; }
+
+    .profile-photo {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      object-position: top center;
+      border-radius: 3px;
+      display: block;
+      filter: saturate(0.88);
+    }
+
+    .profile-meta { margin-top: 1.1rem; }
+
+    .profile-name {
+      font-size: 1.05rem;
+      font-weight: bold;
+      color: var(--dark);
+    }
+
+    .profile-role {
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--light);
+      margin-top: 0.25rem;
+    }
+
+    .site-nav {
+      margin: 1.4rem 0 1.5rem;
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .site-nav a {
+      font-size: 0.82rem;
+      color: var(--mid);
+      text-decoration: none;
+      padding: 0.32rem 0 0.32rem 0.9rem;
+      border-left: 2px solid transparent;
+      margin-left: -1px;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .site-nav a:hover { color: var(--accent); }
+
+    .site-nav a.active {
+      color: var(--accent);
+      border-left-color: var(--accent);
+      font-weight: bold;
+    }
+
+    .profile-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.42rem;
+      list-style: none;
+    }
+
+    .profile-links a {
+      font-size: 0.78rem;
+      color: var(--mid);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.18s;
+    }
+
+    .profile-links a::before {
+      content: '';
+      display: inline-block;
+      width: 12px;
+      height: 1px;
+      background: var(--border);
+      flex-shrink: 0;
+      transition: width 0.2s, background 0.2s;
+    }
+
+    .profile-links a:hover { color: var(--accent); }
+    .profile-links a:hover::before { background: var(--accent); width: 18px; }
+
+    /* ── MAIN ── */
+    main { min-width: 0; }
+
+    section {
+      opacity: 0;
+      transform: translateY(8px);
+      animation: rise 0.4s ease forwards 0.05s;
+    }
+
+    @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+    .section-header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.6rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .sec-title {
+      font-size: 1rem;
+      font-weight: bold;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--dark);
+    }
+
+    /* ── CONTROLS ── */
+    .pub-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.85rem;
+      color: var(--dark);
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input::placeholder { color: var(--light); }
+    .search-input:focus { border-color: var(--accent); }
+
+    .tag-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      align-items: center;
+    }
+
+    .filter-label {
+      font-size: 0.7rem;
+      font-weight: bold;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--light);
+      margin-right: 0.15rem;
+    }
+
+    .tag-btn {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.72rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--mid);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+
+    .tag-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    .tag-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    /* ── RESULTS BAR ── */
+    .results-bar {
+      font-size: 0.75rem;
+      color: var(--light);
+      margin-bottom: 0.25rem;
+      min-height: 1.4em;
+    }
+
+    /* ── SECTION LABEL ── */
+    .pub-section-label {
+      font-size: 0.7rem;
+      font-weight: bold;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--light);
+      padding: 1rem 0 0.5rem;
+      border-top: 1px solid var(--border);
+      margin-top: 0.25rem;
+    }
+
+    .pub-section-label:first-child { border-top: none; margin-top: 0; padding-top: 0.25rem; }
+
+    /* ── PUB ITEM ── */
+    .pub-item {
+      display: grid;
+      grid-template-columns: 2.25rem 1fr;
+      gap: 0 1.25rem;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .pub-item[hidden] { display: none; }
+
+    .pub-num {
+      font-size: 0.75rem;
+      color: var(--accent);
+      text-align: right;
+      padding-top: 0.2em;
+      font-weight: bold;
+    }
+
+    .pub-title {
+      font-size: 0.93rem;
+      font-weight: bold;
+      color: var(--dark);
+      line-height: 1.4;
+      margin-bottom: 0.3rem;
+    }
+
+    .pub-meta {
+      font-size: 0.8rem;
+      color: var(--light);
+      line-height: 1.5;
+      margin-bottom: 0.5rem;
+    }
+
+    /* ── INLINE TAGS ── */
+    .pub-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .tag {
+      font-size: 0.67rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 20px;
+      font-weight: bold;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .tag[data-tag="Human Genetics"]      { background: #e4eefb; color: #1a5fa0; }
+    .tag[data-tag="Genomics"]            { background: #e4f5e9; color: #1e7a3a; }
+    .tag[data-tag="Genetic Epidemiology"]{ background: #f0e8fb; color: #6b35b0; }
+    .tag[data-tag="Physiology"]          { background: #fff0e0; color: #c06000; }
+    .tag[data-tag="Medical Informatics"] { background: #fde8e8; color: #b02020; }
+
+    /* ── ABSTRACT ── */
+    .pub-abstract-wrap { margin-bottom: 0.6rem; }
+
+    .pub-abstract {
+      font-size: 0.84rem;
+      color: var(--mid);
+      line-height: 1.75;
+    }
+
+    .pub-abstract:not(.expanded) {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .abstract-toggle {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.72rem;
+      font-weight: bold;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.3rem 0 0;
+      display: block;
+      transition: opacity 0.15s;
+    }
+
+    .abstract-toggle:hover { opacity: 0.7; }
+
+    /* ── DOI LINK ── */
+    .pub-doi {
+      font-size: 0.72rem;
+      font-weight: bold;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: gap 0.18s;
+    }
+
+    .pub-doi:hover { gap: 0.55rem; }
+
+    /* ── NO RESULTS ── */
+    #no-results {
+      padding: 2rem 0;
+      font-size: 0.88rem;
+      color: var(--light);
+      display: none;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 660px) {
+      .page {
+        grid-template-columns: 1fr;
+        padding: 2rem 1.25rem 5rem;
+        gap: 2rem 0;
+      }
+      .sidebar { position: static; }
+      .profile-photo { max-width: 150px; }
+      header { padding: 0 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="nav-name" href="index.html">Wanjun Gu</a>
+  </header>
+
+  <div class="page">
+    <aside class="sidebar">
+      <img class="profile-photo" src="pictures/wanjun.jpg" alt="Wanjun Gu">
+      <div class="profile-meta">
+        <div class="profile-name">Wanjun Gu</div>
+        <div class="profile-role">PhD · Bioinformatics · UCSF</div>
+        <nav class="site-nav">
+          <a href="index.html">About</a>
+          <a href="software.html">Software</a>
+          <a href="publications.html" class="active">Publications</a>
+          <a href="Wanjun Gu CV.pdf" target="_blank">CV</a>
+        </nav>
+        <ul class="profile-links">
+          <li><a href="mailto:wanjun.gu@ucsf.edu">Email</a></li>
+          <li><a href="https://scholar.google.com/citations?hl=en&user=RLSWT98AAAAJ">Google Scholar</a></li>
+          <li><a href="https://www.researchgate.net/profile/Wanjun-Gu">ResearchGate</a></li>
+          <li><a href="https://github.com/Broccolito">GitHub</a></li>
+          <li><a href="https://twitter.com/WanjunGu1">Twitter</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <main>
+      <section>
+        <div class="section-header">
+          <h2 class="sec-title">Publications</h2>
+        </div>
+
+        <div class="pub-controls">
+          <input type="text" id="search-input" class="search-input" placeholder="Search titles, abstracts, or tags…">
+          <div class="tag-filters">
+            <span class="filter-label">Filter:</span>
+            <button class="tag-btn" data-tag="Human Genetics">Human Genetics</button>
+            <button class="tag-btn" data-tag="Genomics">Genomics</button>
+            <button class="tag-btn" data-tag="Genetic Epidemiology">Genetic Epidemiology</button>
+            <button class="tag-btn" data-tag="Physiology">Physiology</button>
+            <button class="tag-btn" data-tag="Medical Informatics">Medical Informatics</button>
+          </div>
+        </div>
+
+        <div class="results-bar">
+          <span id="results-count">29 publications</span>
+        </div>
+
+        <div id="pub-list">
+
+          <div class="pub-section-label" id="label-first">First- &amp; Co-first-authored</div>
+
+          <div class="pub-item" data-tags="Genomics|Physiology" data-section="first">
+            <span class="pub-num">01</span>
+            <div>
+              <h3 class="pub-title">Time-restricted feeding ameliorates type 2 diabetes via gut microbiota–bile acids-liver axis</h3>
+              <p class="pub-meta">Ma S*, Gu W*, Bellucci G, et al. &nbsp;·&nbsp; Research Square [Preprint], 2026 &nbsp;·&nbsp; Under review at <em>Nature Communications</em></p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Genomics">Genomics</span>
+                <span class="tag" data-tag="Physiology">Physiology</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">Time-restricted feeding (TRF) reverses type 2 diabetes by correcting a hepatic HNF4α–CYP8B1 pathway dysregulation that drives excess 12α-hydroxylated bile acids and depletes beneficial gut bacteria (Parabacteroides distasonis). TRF suppresses this liver pathway, shifts bile acid composition toward beneficial types such as ursodeoxycholic acid (UDCA), and restores healthy gut microbiota. Supplementing UDCA or beneficial bacteria alone provides only partial improvement—only TRF corrects the underlying liver dysfunction—demonstrating that feeding timing is a key regulator of both host and microbial metabolic health in diabetes.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+              <a class="pub-doi" href="https://doi.org/10.21203/rs.3.rs-8605936/v1" target="_blank">DOI →</a>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Genomics|Physiology" data-section="first">
+            <span class="pub-num">02</span>
+            <div>
+              <h3 class="pub-title">E-cigarette vaping is associated with pro-fibrotic gene expression in kidney and liver tissues</h3>
+              <p class="pub-meta">Gu W, Chang H, Saini P, et al. &nbsp;·&nbsp; Research Square [Preprint], 2025</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Genomics">Genomics</span>
+                <span class="tag" data-tag="Physiology">Physiology</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">Mice exposed to e-cigarette vapor with and without nicotine for one hour daily over three months showed organ-specific transcriptomic changes. Nicotine drove greater alterations in the kidney (oxidative stress via Car3 and Foxo3), while vehicle chemicals produced greater changes in the liver (disrupted lipid metabolism and immune signaling via Il6ra and Lpin1). Chronic e-cigarette inhalation triggers gene expression patterns consistent with promoting fibrosis and metabolic dysfunction across organ systems, highlighting the need for further investigation into long-term health consequences.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+              <a class="pub-doi" href="https://doi.org/10.21203/rs.3.rs-7609713/v1" target="_blank">DOI →</a>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Human Genetics|Genetic Epidemiology|Genomics" data-section="first">
+            <span class="pub-num">03</span>
+            <div>
+              <h3 class="pub-title">Evaluating the contribution of genome 3D folding to variation in human height using machine learning</h3>
+              <p class="pub-meta">Gu W, Gilbertson EN, Baranzini SE, et al. &nbsp;·&nbsp; bioRxiv [Preprint], 2025</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Human Genetics">Human Genetics</span>
+                <span class="tag" data-tag="Genetic Epidemiology">Genetic Epidemiology</span>
+                <span class="tag" data-tag="Genomics">Genomics</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">A computational framework integrating GWAS summary statistics with the Akita deep learning model of 3D chromatin contacts was applied to 9,917 genomic regions associated with human height. Only a small fraction of height-associated haplotypes showed substantial predicted disruption of 3D genome folding (17 regions, 0.17%), with multi-variant analysis typically producing stronger effects than individual variants. A key variant was identified that disrupts a confirmed CTCF binding site and alters predicted 3D contacts with the LCOR gene promoter. This work provides a scalable, interpretable strategy for connecting noncoding genetic variation to complex traits through 3D regulatory mechanisms.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+              <a class="pub-doi" href="https://doi.org/10.1101/2025.09.09.675195" target="_blank">DOI →</a>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Genomics|Physiology" data-section="first">
+            <span class="pub-num">04</span>
+            <div>
+              <h3 class="pub-title">Baseline metabolomic profile as potential biomarker for weight change after Roux-en-Y gastric bypass (RYGB) surgery</h3>
+              <p class="pub-meta">Gu W, Deng S, Stylopoulos N, et al. &nbsp;·&nbsp; Research Square [Preprint], 2025</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Genomics">Genomics</span>
+                <span class="tag" data-tag="Physiology">Physiology</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">A 13-metabolite risk score (MetRS) derived from fasting plasma samples can distinguish patients who achieve sustained weight loss from those who experience regain after Roux-en-Y gastric bypass surgery, outperforming standard clinical variables. Key pathways involve fatty acid oxidation, bile acid conjugation, and microbial-host interactions. Validated across two independent cohorts with heritable metabolic components identified, this work lays the groundwork for integrating metabolic profiling into preoperative assessment for personalized obesity care.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+              <a class="pub-doi" href="https://doi.org/10.21203/rs.3.rs-7256000/v1" target="_blank">DOI →</a>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Genetic Epidemiology" data-section="first">
+            <span class="pub-num">05</span>
+            <div>
+              <h3 class="pub-title">Kinship Decouple and Phenotype Selection (KDPS): a tool for phenotype-aware decoupling of related subjects</h3>
+              <p class="pub-meta">Gu W, Xi J, Cao S, et al. &nbsp;·&nbsp; <em>Briefings in Bioinformatics</em>, 26, bbaf561 (2025)</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Genetic Epidemiology">Genetic Epidemiology</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">KDPS (Kinship Decouple and Phenotype Selection) is the first tool to incorporate phenotypic information into the removal of related subjects from genomic cohorts, accommodating both quantitative and categorical phenotypes. Tested on UK Biobank data, KDPS increased retention of subjects with targeted phenotypes by 8.7–12.1% compared to phenotype-naive approaches across conditions including schizophrenia, myocardial infarction, and multiple sclerosis, with practical processing times on large datasets.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+              <a class="pub-doi" href="https://doi.org/10.1093/bib/bbaf561" target="_blank">DOI →</a>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Human Genetics|Genomics|Physiology" data-section="first">
+            <span class="pub-num">06</span>
+            <div>
+              <h3 class="pub-title">Genetic adaptations shaping survival, pregnancy, and life at high altitude and sea level</h3>
+              <p class="pub-meta">Gu W, Lawrence ES, Evans AM, et al. &nbsp;·&nbsp; <em>Philosophical Transactions of the Royal Society B</em>, 380(1933):20240170 (2025)</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Human Genetics">Human Genetics</span>
+                <span class="tag" data-tag="Genomics">Genomics</span>
+                <span class="tag" data-tag="Physiology">Physiology</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">This review examines genetic adaptations enabling human survival at high altitude in Andean populations. Adaptive variation at EPAS1 (HIF pathway regulator) is associated with lower haematocrit, linked to improved oxygen transport; PRKAA1 (AMP-activated protein kinase subunit) is linked to breathing responses, sleep characteristics, and pregnancy outcomes at altitude. The authors advocate for integrative molecular, physiological, and evolutionary studies to reveal the complexities of high-altitude adaptation and their relevance to oxygen-related health in both highland and lowland communities.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+              <a class="pub-doi" href="https://doi.org/10.1098/rstb.2024.0170" target="_blank">DOI →</a>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Human Genetics|Genomics|Physiology" data-section="first">
+            <span class="pub-num">07</span>
+            <div>
+              <h3 class="pub-title">Adaptive PRKAA1 variant in Andeans is associated with improved ventilation and sleep phenotypes</h3>
+              <p class="pub-meta">Lawrence ES*, Gu W*, Kong MC, et al. &nbsp;·&nbsp; <em>iScience</em>, 28(8):112911 (2025)</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Human Genetics">Human Genetics</span>
+                <span class="tag" data-tag="Genomics">Genomics</span>
+                <span class="tag" data-tag="Physiology">Physiology</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">A regulatory variant (rs10035235, C&gt;T) in PRKAA1—which encodes a subunit of AMP-activated protein kinase—shows positive selection in Andeans and is associated with improved ventilatory and sleep phenotypes in male Andean highlanders as well as sleep phenotypes in lowland cohorts. The variant likely has pleiotropic effects, enhancing hypoxia-induced ventilation and offering protection against sleep-disordered breathing across both high-altitude and lowland environments.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+              <a class="pub-doi" href="https://doi.org/10.1016/j.isci.2025.112911" target="_blank">DOI →</a>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Human Genetics|Genomics|Physiology" data-section="first">
+            <span class="pub-num">08</span>
+            <div>
+              <h3 class="pub-title">Functional EPAS1/HIF2A missense variant is associated with hematocrit in Andean highlanders</h3>
+              <p class="pub-meta">Lawrence ES*, Gu W*, Bohlender R, et al. &nbsp;·&nbsp; <em>Science Advances</em>, 10(6), eadj5661 (2024)</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Human Genetics">Human Genetics</span>
+                <span class="tag" data-tag="Genomics">Genomics</span>
+                <span class="tag" data-tag="Physiology">Physiology</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">Hypoxia-inducible factor pathway genes are linked to adaptation in both human and nonhuman highland species. EPAS1, a notable target of hypoxia adaptation, is associated with relatively lower hemoglobin concentration in Tibetans. We provide evidence for an association between an adaptive EPAS1 variant (rs570553380) and the same phenotype of relatively low hematocrit in Andean highlanders. This Andean-specific missense variant is present at a modest frequency in Andeans and absent in other human populations and vertebrate species except the coelacanth. CRISPR-base-edited human cells with this variant exhibit shifts in hypoxia-regulated gene expression, while metabolomic analyses reveal both genotype and phenotype associations and validation in a lowland population.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+              <a class="pub-doi" href="https://doi.org/10.1126/sciadv.adj5661" target="_blank">DOI →</a>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Genomics" data-section="first">
+            <span class="pub-num">09</span>
+            <div>
+              <h3 class="pub-title">Transcriptome meta-analysis of Kawasaki disease in humans and mice</h3>
+              <p class="pub-meta">Gu W, Mirsaidi-Madjdabadi S, Ramirez F Jr, et al. &nbsp;·&nbsp; <em>Frontiers in Pediatrics</em>, 12, 1423958 (2024)</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Genomics">Genomics</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">RNA sequencing data from Kawasaki Disease (KD) patient blood and coronary artery tissue was compared with mouse model samples, identifying 400 differentially expressed genes in blood and 413 in coronary artery tissue with minimal overlap between compartments. Human coronary artery samples aligned more strongly with mouse aorta tissue (81 overlapping genes, 67 with parallel regulation), validating mouse models for therapeutic research. Known markers including CD74, SFRP4, S100A9, and S100A8 were confirmed, with significant disruptions in cardiomyopathy-related pathways.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+              <a class="pub-doi" href="https://doi.org/10.3389/fped.2024.1423958" target="_blank">DOI →</a>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Physiology" data-section="first">
+            <span class="pub-num">10</span>
+            <div>
+              <h3 class="pub-title">Preserved peak exercise capacity in Andean highlanders with Chronic Mountain Sickness both before and after isovolumic hemodilution</h3>
+              <p class="pub-meta">Anza-Ramirez C*, Gu W*, Macarlupu JL, et al. &nbsp;·&nbsp; <em>Journal of Applied Physiology</em> (2022)</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Physiology">Physiology</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">Among 14 male residents of Cerro de Pasco, Peru (4,340 m), six with excessive erythrocytosis (EE, [Hb] ≥ 21 g/dL) maintained similar peak V̇O₂ and systemic O₂ delivery compared to controls, despite lower cardiac output offset by higher arterial oxygen content. After isovolumic hemodilution (reducing hematocrit from 67% to 53%), peak V̇O₂ remained stable. Lung and muscle diffusing capacity accounted for essentially all interindividual variance in peak V̇O₂, demonstrating that excessive erythrocytosis does not impair exercise performance and hemodilution does not enhance it.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+              <a class="pub-doi" href="https://doi.org/10.1152/japplphysiol.00439.2022" target="_blank">DOI →</a>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Genomics|Physiology" data-section="first">
+            <span class="pub-num">11</span>
+            <div>
+              <h3 class="pub-title">Energy Metabolism Dysregulation in Chronic Kidney Disease</h3>
+              <p class="pub-meta">Li Y*, Gu W*, Hepokoski M, et al. &nbsp;·&nbsp; <em>Kidney360</em>, 4, 1080–1094 (2023)</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Genomics">Genomics</span>
+                <span class="tag" data-tag="Physiology">Physiology</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">Transcriptomic analysis of kidneys from mice that underwent subtotal nephrectomy (versus sham surgery) revealed 872 significantly differentially expressed genes from nearly 2,000 analyzed. Kidney injury triggers increased glycolysis but reduced mitochondrial respiration, despite increased mitochondrial production; fatty acid oxidation and glycolytic enzyme expression increases; and pyruvate dehydrogenase activity is suppressed, limiting citric acid cycle fuel supply. These findings identify energy metabolism dysregulation as a key CKD mechanism and suggest metabolic interventions as a potential new therapeutic avenue.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Physiology" data-section="first">
+            <span class="pub-num">12</span>
+            <div>
+              <h3 class="pub-title">Heterogeneity in lobar and near-acini deposition of inhaled aerosol in the mouse lung</h3>
+              <p class="pub-meta">Gu W, Darquenne C. &nbsp;·&nbsp; <em>Journal of Aerosol Science</em>, 151, 105642 (2021)</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Physiology">Physiology</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">Analysis of 33 mice exposed to particles of 0.5, 1, and 2 µm revealed significantly elevated deposition-to-volume ratios in the cranial lobe relative to other lobes, with deposition concentrated in apical hot spots and variability increasing with particle size. Depending on lung sample location, individual analysis can underestimate or overestimate total lung burden, particularly for micron-sized particles. These heterogeneous distribution patterns have important implications for laboratory aerosol research and drug delivery assessments using mouse models.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+              <a class="pub-doi" href="https://doi.org/10.1016/j.jaerosci.2020.105642" target="_blank">DOI →</a>
+            </div>
+          </div>
+
+          <div class="pub-section-label" id="label-co">Co-authored</div>
+
+          <div class="pub-item" data-tags="Human Genetics|Genomics|Physiology" data-section="co">
+            <span class="pub-num">13</span>
+            <div>
+              <h3 class="pub-title">Dysregulated Fatty Acid Metabolism in Preeclampsia Among Highland Andeans: Insights Into Adaptive and Maladaptive Placental Metabolic Phenotypes</h3>
+              <p class="pub-meta">O'Brien KA, Toledo-Jaldin L, Gu W, et al. &nbsp;·&nbsp; <em>FASEB Journal</em>, 39, e71254 (2025)</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Human Genetics">Human Genetics</span>
+                <span class="tag" data-tag="Genomics">Genomics</span>
+                <span class="tag" data-tag="Physiology">Physiology</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">Comparing pregnancies complicated by preeclampsia to normotensive pregnancies among Highland Andeans, this study identified pronounced accumulation of medium and long-chain acylcarnitines in preeclampsia cases, correlating with lower birth weights. Adaptive fetal genetic variants in lipid metabolism were protective, showing higher free carnitine levels and improved fatty acid oxidation patterns. The findings reveal a distinct metabolic phenotype in Andean preeclampsia characterized by incomplete fatty acid oxidation, with genetic factors distinguishing adaptive from maladaptive placental metabolic responses at high altitude.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Genomics|Physiology" data-section="co">
+            <span class="pub-num">14</span>
+            <div>
+              <h3 class="pub-title">Multidimensional analysis of twin sets during an intensive week-long meditation retreat: a pilot study</h3>
+              <p class="pub-meta">Zuniga-Hertz JP, Simpson S, Chitetti R, Gu W, et al. &nbsp;·&nbsp; <em>Mindfulness</em>, 16:1634–1655 (2025)</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Genomics">Genomics</span>
+                <span class="tag" data-tag="Physiology">Physiology</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">This pilot study analyzed gene expression, metabolites, immune markers, quantitative EEG, and heart rate dynamics in twin pairs before, during, and after an intensive week-long meditation retreat. Twin pairs showed physiological similarity at baseline and retreat's end but diverged at the mid-point. Strikingly, twin pairs exhibited synchronized EEG spectral power even in separate rooms, and heart rate alignment appeared between co-twins but not unrelated participants—an effect absent when only one twin meditated.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+              <a class="pub-doi" href="https://doi.org/10.1007/s12671-025-02584-x" target="_blank">DOI →</a>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Medical Informatics" data-section="co">
+            <span class="pub-num">15</span>
+            <div>
+              <h3 class="pub-title">A modified method for measuring the calcaneal moment arm on weight-bearing computed tomography</h3>
+              <p class="pub-meta">Zhu M, Sempson S, Gu W, et al. &nbsp;·&nbsp; <em>Journal of Foot and Ankle Research</em>, 18, 338–341 (2024)</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Medical Informatics">Medical Informatics</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">Examining 10 non-deformed feet with WBCT images rotated internally and externally by 5–20 degrees from neutral, this study found that each 1-degree rotation corresponded to a 0.48 (±0.03) mm change in the modified WBCT Calcaneal Moment Arm (CMA) value. Internal rotation shifted neutral hindfoot toward valgus; external rotation shifted it toward varus. Consistent positioning of WBCT images is critical for accurate measurements, as current alignment evaluation tools rely on 2-dimensional methodologies despite the 3D nature of the imaging technology.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Medical Informatics" data-section="co">
+            <span class="pub-num">16</span>
+            <div>
+              <h3 class="pub-title">Different positions of weightbearing CT images can influence the hindfoot alignment evaluation using 2-dimensional methodology</h3>
+              <p class="pub-meta">Zhu M, Gu W, Wang C, et al. &nbsp;·&nbsp; <em>Foot &amp; Ankle International</em>, 45, 1390–1396 (2024)</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Medical Informatics">Medical Informatics</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">Rotational positioning variations in weightbearing CT scans significantly affect hindfoot alignment measurements. Analysis of 10 non-deformed feet at rotations of up to 20 degrees showed approximately 0.48 mm change in CMA per degree of rotation, with internal rotation inducing valgus and external rotation inducing varus appearance. Current 2-dimensional hindfoot measurement approaches have inherent limitations despite the availability of 3D WBCT imaging, underscoring the need for standardized image positioning protocols.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Genomics" data-section="co">
+            <span class="pub-num">17</span>
+            <div>
+              <h3 class="pub-title">Development of multiplexed orthogonal base editor (MOBE) systems</h3>
+              <p class="pub-meta">Cowan QT, Gu S, Gu W, et al. &nbsp;·&nbsp; <em>Nature Biotechnology</em> (2024)</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Genomics">Genomics</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">MOBE (Multiplexed Orthogonal Base Editor) systems enable simultaneous deployment of multiple base editors without cross-interference, using RNA aptamer–coat protein systems to recruit DNA-modifying enzymes directly to guide RNAs. The approach achieved co-occurring edits on the same DNA strand at up to 7.1% efficiency without enrichment and 24.8% in human cells with fluorescent enrichment, across multiple cell types and compatible with high-fidelity Cas9 variants. MOBE successfully modeled disease-relevant point mutation combinations including Kallmann syndrome and isolated anencephaly, demonstrating broad potential for disease modeling and therapeutic applications.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+              <a class="pub-doi" href="https://doi.org/10.1038/s41587-024-02240-0" target="_blank">DOI →</a>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Human Genetics|Genetic Epidemiology|Genomics|Physiology" data-section="co">
+            <span class="pub-num">18</span>
+            <div>
+              <h3 class="pub-title">Genomic Selection Signals in Andean Highlanders Reveal Adaptive Placental Metabolic Phenotypes That Are Disrupted in Preeclampsia</h3>
+              <p class="pub-meta">O'Brien KA, Gu W, Houck JA, et al. &nbsp;·&nbsp; <em>Hypertension</em>, 81, 319–329 (2024)</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Human Genetics">Human Genetics</span>
+                <span class="tag" data-tag="Genetic Epidemiology">Genetic Epidemiology</span>
+                <span class="tag" data-tag="Genomics">Genomics</span>
+                <span class="tag" data-tag="Physiology">Physiology</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">In 79 Andean Highland women at 3,600–4,100 m (39 with preeclampsia, 40 normotensive), placental mitochondrial oxidative capacity correlated with fetal oxygen delivery in normotensive pregnancies but this relationship was suppressed in preeclampsia. Maternal genetic variants near selection-nominated genes associated with altered placental metabolic function, reduced erythropoietin, and decreased umbilical VEGF. A fetal CPT2 haplotype linked to increased placental complex II capacity and GLUT4 expression. The findings suggest adaptive placental metabolic mechanisms in highland Andeans have genetic origins, but preeclampsia disrupts these protective mechanisms through dysregulated oxygen consumption and metabolic dysfunction.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Human Genetics|Genomics|Physiology" data-section="co">
+            <span class="pub-num">19</span>
+            <div>
+              <h3 class="pub-title">Tibetans exhibit lower hemoglobin concentration and decreased heart response to hypoxia with distinct CO₂ responses at intermediate altitude relative to Han Chinese</h3>
+              <p class="pub-meta">Moya EA, Yu JJ, Brown S, Gu W, et al. &nbsp;·&nbsp; <em>Frontiers in Physiology</em> (2024)</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Human Genetics">Human Genetics</span>
+                <span class="tag" data-tag="Genomics">Genomics</span>
+                <span class="tag" data-tag="Physiology">Physiology</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">Compared to Han Chinese living at intermediate altitude (~1,300 m), male Tibetans displayed lower hemoglobin concentration and blunted hypoxic heart rate responses (both poikilocapnic and in response to CO₂ during hypoxia). The findings suggest some Tibetan adaptive traits manifest at intermediate elevations while others may only appear under more severe oxygen deprivation, indicating complex interactions between genetic predisposition and altitude exposure in shaping population-level physiological differences.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+              <a class="pub-doi" href="https://doi.org/10.3389/fphys.2024.1334874" target="_blank">DOI →</a>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Medical Informatics" data-section="co">
+            <span class="pub-num">20</span>
+            <div>
+              <h3 class="pub-title">Content validation of the progressive collapsing foot deformity classification</h3>
+              <p class="pub-meta">Zhu M, Maher MA, Gu W, et al. &nbsp;·&nbsp; <em>Journal of the Foot &amp; Ankle</em>, 17, 156–162 (2023)</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Medical Informatics">Medical Informatics</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">An international survey of 82 experienced foot and ankle surgeons across 22 countries found that 80.5% considered the PCFD classification helpful for decision-making and 79.3% found it aided diagnosis and documentation, but only 58.5% found it easy to use and 30.5% were unlikely to use it. The most problematic terminology included "increased foot and ankle offset" (42.7% difficulty) and "increased hindfoot moment arm" (35.4% difficulty). The findings indicate key terminologies in the PCFD classification require refinement to enhance clarity and clinical utility for the international orthopedic community.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Genomics|Physiology" data-section="co">
+            <span class="pub-num">21</span>
+            <div>
+              <h3 class="pub-title">Inflammation biomarkers in OSA, chronic obstructive pulmonary disease, and chronic obstructive pulmonary disease/OSA overlap syndrome</h3>
+              <p class="pub-meta">Sanchez-Azofra A, Gu W, Masso-Silva JA, et al. &nbsp;·&nbsp; <em>Journal of Clinical Sleep Medicine</em>, 19, 1447–1456 (2023)</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Genomics">Genomics</span>
+                <span class="tag" data-tag="Physiology">Physiology</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">Across 255 participants (COPD, OSA, overlap syndrome [OVS], and healthy controls), COPD and OVS showed higher systemic inflammation (IL-6, CRP, G-CSF) compared to OSA and controls. OVS patients exhibited higher circulating leukocytes and neutrophils than all other groups. The authors propose inflammatory markers as potential screening tools for COPD in OSA patients, but note that inflammation alone may not fully account for the elevated cardiovascular risk in OVS, suggesting additional underlying mechanisms.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Physiology" data-section="co">
+            <span class="pub-num">22</span>
+            <div>
+              <h3 class="pub-title">In Silico Quantification of Intersubject Variability on Aerosol Deposition in the Oral Airway</h3>
+              <p class="pub-meta">Borojeni AAT, Gu W, Asgharian B, et al. &nbsp;·&nbsp; <em>Pharmaceutics</em>, 15(1), 160 (2023)</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Physiology">Physiology</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">Computational modeling of 11 adult airways simulated pharmaceutical aerosol deposition at nebulizer (18 L/min) and dry powder inhaler (45 L/min) flow rates. For the optimal 1–5 µm size range, &gt;75% of inhaled aerosol reached the intrathoracic lungs in most subjects with a nebulizer, but in only about half of subjects with a DPI. Large intersubject variability in oral deposition was documented, and breathing phase affected regional deposition patterns but not overall efficiency. Results emphasize the need to incorporate upper airway morphological variation into predictive aerosol deposition models.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+              <a class="pub-doi" href="https://doi.org/10.3390/pharmaceutics15010160" target="_blank">DOI →</a>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Physiology" data-section="co">
+            <span class="pub-num">23</span>
+            <div>
+              <h3 class="pub-title">Isovolemic hemodilution in chronic mountain sickness acutely worsens nocturnal oxygenation and sleep apnea severity</h3>
+              <p class="pub-meta">Sanchez-Azofra A, Villafuerte FC, DeYoung PN, Gu W, et al. &nbsp;·&nbsp; <em>Journal of Clinical Sleep Medicine</em> (2022)</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Physiology">Physiology</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">In 6 chronic mountain sickness (CMS) patients and 8 controls at 4,340 m, baseline CMS was not associated with worsened sleep-disordered breathing (SDB). However, after isovolemic hemodilution, CMS patients experienced significant deterioration: the apnea-hypopnea index increased from 40.9 to 61.5 events/hour, the oxyhemoglobin desaturation index worsened, and time with oxygen saturation ≤80% increased. These findings demonstrate that hemodilution worsens nocturnal oxygenation and SDB within 48 hours, countering the hypothesis that reducing blood viscosity would improve sleep-disordered breathing in CMS.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+              <a class="pub-doi" href="https://doi.org/10.5664/jcsm.10136" target="_blank">DOI →</a>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Physiology" data-section="co">
+            <span class="pub-num">24</span>
+            <div>
+              <h3 class="pub-title">Influence of Alveolar Mixing and Multiple Breaths of Aerosol Intake on Particle Deposition in the Human Lungs</h3>
+              <p class="pub-meta">Asgharian B, Price O, Borojeni AAT, Gu W, et al. &nbsp;·&nbsp; <em>Journal of Aerosol Science</em> (2022)</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Physiology">Physiology</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">The widely used 1D Multiple-Path Particle Dosimetry (MPPD) model was enhanced by incorporating alveolar mixing mechanics and multi-breath capability. The revised model improved agreement with experimental measurements for 1 µm particles, bringing predictions to 34 ± 2% (slow breathing) and 25 ± 2% (fast breathing) versus experimental values of 43 ± 9% and 30 ± 5%, respectively. The improved model supports more accurate human health risk assessment from airborne particle exposure and pharmaceutical aerosol delivery design.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+              <a class="pub-doi" href="https://doi.org/10.2139/ssrn.4042662" target="_blank">DOI →</a>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Genomics|Physiology" data-section="co">
+            <span class="pub-num">25</span>
+            <div>
+              <h3 class="pub-title">Effects of mango and mint pod-based e-cigarette aerosol inhalation on inflammatory states of the brain, lung, heart, and colon in mice</h3>
+              <p class="pub-meta">Moshensky A, Brand CS, Alhaddad H, Gu W, et al. &nbsp;·&nbsp; <em>eLife</em>, 11 (2022)</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Genomics">Genomics</span>
+                <span class="tag" data-tag="Physiology">Physiology</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">Mice exposed to mango and mint JUUL aerosols three times daily for three months developed multi-organ inflammation. E-cigarette aerosol induced upregulation of cytokine and chemokine gene expression and increased HMGB1 and RAGE in the nucleus accumbens, with similar inflammatory responses in the colon, broader gene expression alterations in the lungs, and exacerbated cardiac inflammatory responses to acute lung injury. Different flavors produced distinct inflammatory profiles across tissues, suggesting flavor compounds themselves contribute to harmful effects beyond nicotine, with implications for neuroinflammation, gut inflammation, and cardiovascular disease.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+              <a class="pub-doi" href="https://doi.org/10.7554/eLife.67621" target="_blank">DOI →</a>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Genomics|Physiology" data-section="co">
+            <span class="pub-num">26</span>
+            <div>
+              <h3 class="pub-title">Time Domains of Hypoxia Responses and -Omics Insights</h3>
+              <p class="pub-meta">Yu JJ, Non AL, Heinrich EC, Gu W, et al. &nbsp;·&nbsp; <em>Frontiers in Physiology</em>, 13, 885295 (2022)</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Genomics">Genomics</span>
+                <span class="tag" data-tag="Physiology">Physiology</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">This integrative review synthesizes findings across different timeframes of hypoxia exposure, from early animal evolution to contemporary human populations. It examines oxygen delivery adaptations across species, human variation in hypoxia responses during high-altitude exposure, cardiopulmonary disease, and sleep apnea, integrating comparative physiology with modern multi-omics technologies. The work bridges evolutionary biology and clinical research to advance understanding of both adaptive mechanisms and pathological responses to hypoxia.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+              <a class="pub-doi" href="https://doi.org/10.3389/fphys.2022.885295" target="_blank">DOI →</a>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Medical Informatics" data-section="co">
+            <span class="pub-num">27</span>
+            <div>
+              <h3 class="pub-title">Diagnostic Accuracy of the Progressive Collapsing Foot Deformity (PCFD) Classification</h3>
+              <p class="pub-meta">Li S, Zhu M, Gu W, et al. &nbsp;·&nbsp; <em>Foot &amp; Ankle International</em>, 43(6), 800–809 (2022)</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Medical Informatics">Medical Informatics</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">A survey across 13 foot and ankle fellowship programs asking participants to classify 20 flatfoot deformity cases yielded an overall diagnostic accuracy of 71.0% (class accuracy 78.3%, stage accuracy 81.7%), with significant differences between experience groups. Class B (hindfoot valgus) was frequently overdiagnosed; Class D (peritalar subluxation) was significantly underdiagnosed (26.0% misdiagnosis rate), while Classes A and E had low misdiagnosis rates (&lt;4%). The PCFD classification demonstrated fair overall accuracy, with recommendations for further validation particularly for lower-accuracy classes.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+              <a class="pub-doi" href="https://doi.org/10.1177/10711007221083696" target="_blank">DOI →</a>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Genomics|Physiology" data-section="co">
+            <span class="pub-num">28</span>
+            <div>
+              <h3 class="pub-title">Combined intermittent and sustained hypoxia is a novel and deleterious cardio-metabolic phenotype</h3>
+              <p class="pub-meta">Zhen X, Moya EA, Gautane M, Gu W, et al. &nbsp;·&nbsp; <em>Sleep</em>, 45(6) (2022)</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Genomics">Genomics</span>
+                <span class="tag" data-tag="Physiology">Physiology</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">Mice exposed to overlap hypoxia (OH, combining sustained and intermittent hypoxia) for 40 days developed a uniquely harmful cardio-metabolic phenotype: right ventricular systolic pressure increased 20%; systemic hypertension appeared transiently; LDL/VLDL cholesterol was elevated; and hepatic oxidative stress was highest in the OH group. Unlike sustained hypoxia, overlap hypoxia lacked protective metabolic effects. These findings have direct implications for COPD/OSA overlap syndrome, a clinical condition carrying higher mortality than either disease alone.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+              <a class="pub-doi" href="https://doi.org/10.1093/sleep/zsab290" target="_blank">DOI →</a>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Genomics|Physiology" data-section="co">
+            <span class="pub-num">29</span>
+            <div>
+              <h3 class="pub-title">Targeting Mitochondria and Metabolism in Acute Kidney Injury</h3>
+              <p class="pub-meta">Li Y, Hepokoski M, Gu W, et al. &nbsp;·&nbsp; <em>Journal of Clinical Medicine</em>, 10(17): 3991 (2021)</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Genomics">Genomics</span>
+                <span class="tag" data-tag="Physiology">Physiology</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">Acute kidney injury (AKI) significantly contributes to morbidity and mortality in critically ill patients and is an independent risk factor for developing chronic kidney disease, yet current therapeutic options remain limited. This review synthesizes laboratory and clinical research identifying mitochondrial dysfunction and metabolic changes in kidney tubules as central mechanisms in AKI development. Emerging evidence supports targeting mitochondrial function and metabolic pathways as promising therapeutic strategies to reduce AKI progression and associated morbidity.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+              <a class="pub-doi" href="https://doi.org/10.3390/jcm10173991" target="_blank">DOI →</a>
+            </div>
+          </div>
+
+        </div><!-- #pub-list -->
+
+        <div id="no-results">No publications match your search.</div>
+
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const searchInput  = document.getElementById('search-input');
+    const tagBtns      = document.querySelectorAll('.tag-btn');
+    const pubItems     = document.querySelectorAll('.pub-item');
+    const resultsCount = document.getElementById('results-count');
+    const noResults    = document.getElementById('no-results');
+    const labelFirst   = document.getElementById('label-first');
+    const labelCo      = document.getElementById('label-co');
+
+    let activeTags = new Set();
+
+    function filter() {
+      const query = searchInput.value.toLowerCase().trim();
+      let visibleFirst = 0, visibleCo = 0;
+
+      pubItems.forEach(item => {
+        const title    = item.querySelector('.pub-title').textContent.toLowerCase();
+        const abstract = item.querySelector('.pub-abstract').textContent.toLowerCase();
+        const tagText  = item.dataset.tags.toLowerCase().replace(/\|/g, ' ');
+        const itemTags = item.dataset.tags.split('|');
+        const section  = item.dataset.section;
+
+        const matchesSearch = !query ||
+          title.includes(query) ||
+          abstract.includes(query) ||
+          tagText.includes(query);
+
+        const matchesTags = activeTags.size === 0 ||
+          itemTags.some(t => activeTags.has(t));
+
+        const visible = matchesSearch && matchesTags;
+        item.hidden = !visible;
+
+        if (visible) {
+          if (section === 'first') visibleFirst++;
+          else visibleCo++;
+        }
+      });
+
+      const total = visibleFirst + visibleCo;
+      resultsCount.textContent = total === 29
+        ? '29 publications'
+        : `${total} of 29 publications`;
+
+      noResults.style.display = total === 0 ? 'block' : 'none';
+      labelFirst.style.display = visibleFirst === 0 ? 'none' : '';
+      labelCo.style.display    = visibleCo === 0 ? 'none' : '';
+    }
+
+    searchInput.addEventListener('input', filter);
+
+    tagBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tag = btn.dataset.tag;
+        if (activeTags.has(tag)) {
+          activeTags.delete(tag);
+          btn.classList.remove('active');
+        } else {
+          activeTags.add(tag);
+          btn.classList.add('active');
+        }
+        filter();
+      });
+    });
+
+    document.querySelectorAll('.abstract-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const abstract = btn.previousElementSibling;
+        const expanded = abstract.classList.toggle('expanded');
+        btn.textContent = expanded ? 'Show less' : 'Read more';
+      });
+    });
+  </script>
+
+</body>
+</html>
