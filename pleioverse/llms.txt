@@ -1,0 +1,433 @@
+# pleioverse
+
+Fast, self-contained simulation and testing for pleiotropic genetic
+data.
+
+`pleioverse` is an R package for simulating multi-phenotype genetic
+architectures and running a broad suite of multi-phenotype association
+and pleiotropy tests. The package is organized around one S4 `pleio`
+object, so the typical workflow is simple:
+
+1.  simulate data with
+    [`run_pleiosim()`](https://broccolito.github.io/pleioverse/reference/run_pleiosim.html);
+2.  test the simulated variants with
+    [`run_pleiotest()`](https://broccolito.github.io/pleioverse/reference/run_pleiotest.html),
+    or run selected methods one at a time;
+3.  inspect the accumulated result columns in `pleio@results`.
+
+The aliases
+[`pleiosim()`](https://broccolito.github.io/pleioverse/reference/run_pleiosim.html)
+and
+[`pleiotest()`](https://broccolito.github.io/pleioverse/reference/run_pleiotest.html)
+call the same underlying functions.
+
+## Installation
+
+Install from GitHub:
+
+``` r
+
+install.packages("remotes")
+remotes::install_github("broccolito/pleioverse")
+```
+
+You will need R package-building tools, a C++17-capable compiler, and
+the `Rcpp` and `RcppArmadillo` packages. On macOS this usually means
+installing Xcode Command Line Tools. On Linux, install the standard R
+development toolchain for your distribution.
+
+## Usage
+
+``` r
+
+library(pleioverse)
+
+set.seed(1)
+
+pleio <- run_pleiosim(
+  n_phenotype = 3,
+  n_participant = 10000,
+  n_variant_pleiotropic = 10,
+  n_variant_nonpleiotropic = c(10, 10, 10),
+  n_variant_null = 960,
+  heritability = c(0.1, 0.2, 0.3)
+)
+
+pleio <- run_pleiotest(pleio)
+head(pleio@results)
+```
+
+Run only the methods you need:
+
+``` r
+
+pleio <- run_pleiosim(
+  n_phenotype = 2,
+  n_variant_nonpleiotropic = c(10, 10),
+  heritability = c(0.2, 0.2)
+)
+
+pleio <- pleio |>
+  run_wald() |>
+  run_vc() |>
+  run_placo(i = 1, j = 2)
+
+head(pleio@results)
+```
+
+Combine existing p-value columns with
+[`run_acat()`](https://broccolito.github.io/pleioverse/reference/run_acat.html):
+
+``` r
+
+pleio <- run_acat(pleio, cols = c("wald", "vc", "placo"))
+head(pleio@results$acat)
+```
+
+## Documentation Map
+
+Use the articles when you want a guided workflow, and the reference
+pages when you want arguments, return values, and implementation
+details.
+
+| Need | Start here |
+|----|----|
+| Simulate genotypes, phenotypes, cohort overlap, and correlations | [Simulation articles](https://broccolito.github.io/pleioverse/articles/simulation-genotypes.html) |
+| Run the full test suite and interpret output columns | [Running tests](https://broccolito.github.io/pleioverse/articles/running-tests.html) |
+| Combine selected method results with ACAT | [Combining tests with ACAT](https://broccolito.github.io/pleioverse/articles/combining-tests-acat.html) |
+| Read one article per statistical method | [Method articles](https://broccolito.github.io/pleioverse/articles/) |
+| Look up function arguments and return values | [Function reference](https://broccolito.github.io/pleioverse/reference/) |
+
+## Main Functions
+
+| Task | Functions |
+|----|----|
+| Simulate a complete `pleio` object | [`run_pleiosim()`](https://broccolito.github.io/pleioverse/reference/run_pleiosim.html) |
+| Build simulation input matrices | [`create_heritable_correlation_matrix()`](https://broccolito.github.io/pleioverse/reference/create_heritable_correlation_matrix.html), [`create_nonheritable_correlation_matrix()`](https://broccolito.github.io/pleioverse/reference/create_nonheritable_correlation_matrix.html), [`create_cohort_makeup_matrix()`](https://broccolito.github.io/pleioverse/reference/create_cohort_makeup_matrix.html), [`create_eaf_matrix()`](https://broccolito.github.io/pleioverse/reference/create_eaf_matrix.html), [`create_efs_matrix_template()`](https://broccolito.github.io/pleioverse/reference/create_efs_matrix_template.html) |
+| Run the default suite | [`run_pleiotest()`](https://broccolito.github.io/pleioverse/reference/run_pleiotest.html) |
+| Run common multiple-association tests | [`run_wald()`](https://broccolito.github.io/pleioverse/reference/run_wald.html), [`run_vc()`](https://broccolito.github.io/pleioverse/reference/run_vc.html), [`run_sum()`](https://broccolito.github.io/pleioverse/reference/run_sum.html), [`run_minp()`](https://broccolito.github.io/pleioverse/reference/run_minp.html), [`run_tates()`](https://broccolito.github.io/pleioverse/reference/run_tates.html), [`run_metacca()`](https://broccolito.github.io/pleioverse/reference/run_metacca.html) |
+| Run pleiotropy-focused tests | [`run_placo()`](https://broccolito.github.io/pleioverse/reference/run_placo.html), [`run_pgctest()`](https://broccolito.github.io/pleioverse/reference/run_pgctest.html), [`run_maiup()`](https://broccolito.github.io/pleioverse/reference/run_maiup.html), [`run_conjfdr()`](https://broccolito.github.io/pleioverse/reference/run_conjfdr.html), [`run_polarmorphism()`](https://broccolito.github.io/pleioverse/reference/run_polarmorphism.html) |
+| Aggregate completed result columns | [`run_acat()`](https://broccolito.github.io/pleioverse/reference/run_acat.html) |
+
+## Result Object
+
+[`run_pleiosim()`](https://broccolito.github.io/pleioverse/reference/run_pleiosim.html)
+returns an S4 object of class `pleio`. It stores the simulation
+settings, genotype and phenotype products, summary statistics, and the
+result table populated by
+[`run_pleiotest()`](https://broccolito.github.io/pleioverse/reference/run_pleiotest.html)
+or by individual method functions.
+
+Important result groups are encoded in the variant names:
+
+- `pleio_variant*`: variants associated with all phenotypes;
+- `nonpleio_variant*`: variants associated with one phenotype;
+- `null_variant*`: variants with no simulated phenotype effect.
+
+## Development
+
+Install the package locally from the repository root:
+
+``` sh
+R CMD INSTALL .
+```
+
+Run the test suite:
+
+``` sh
+Rscript -e 'testthat::test_local(".")'
+```
+
+Build the documentation website:
+
+``` sh
+Rscript -e 'pkgdown::build_site()'
+```
+
+The package uses C++17, `Rcpp`, and `RcppArmadillo` for the
+computational core. Files in `dev/` are local parity, baseline, and
+timing scripts; they are not part of the installed R package.
+
+## Method Sources
+
+The statistical methods implemented or mirrored by `pleioverse` are
+grounded in the following linked sources:
+
+- Liu and Lin (2018), multiple phenotype association tests using summary
+  statistics in GWAS, *Biometrics*.
+  [DOI](https://doi.org/10.1111/biom.12735)
+- Liu and Lin (2019), principal-component association tests in multiple
+  phenotype studies, *Journal of the American Statistical Association*.
+  [DOI](https://doi.org/10.1080/01621459.2018.1513363)
+- Luo et al. (2020), MTAR multi-trait rare-variant summary-statistic
+  analysis, *Nature Communications*.
+  [DOI](https://doi.org/10.1038/s41467-020-16591-0)
+- Liu and Xie (2019), Cauchy combination test, *Journal of the American
+  Statistical Association*.
+  [DOI](https://doi.org/10.1080/01621459.2018.1554485)
+- Liu et al. (2019), ACAT rare-variant p-value combination, *American
+  Journal of Human Genetics*.
+  [DOI](https://doi.org/10.1016/j.ajhg.2019.01.002)
+- Wu et al. (2011), SKAT, *American Journal of Human Genetics*.
+  [DOI](https://doi.org/10.1016/j.ajhg.2011.05.029)
+- Lee, Wu, and Lin (2012), optimal rare-variant tests, *Biostatistics*.
+  [DOI](https://doi.org/10.1093/biostatistics/kxs014)
+- van der Sluis, Posthuma, and Dolan (2013), TATES, *PLoS Genetics*.
+  [DOI](https://doi.org/10.1371/journal.pgen.1003235)
+- Li et al. (2011), GATES extended Simes procedure, *American Journal of
+  Human Genetics*. [DOI](https://doi.org/10.1016/j.ajhg.2011.01.019)
+- Cichonska et al. (2016), metaCCA, *Bioinformatics*.
+  [DOI](https://doi.org/10.1093/bioinformatics/btw052)
+- Ray and Chatterjee (2020), PLACO, *PLoS Genetics*.
+  [DOI](https://doi.org/10.1371/journal.pgen.1009218)
+- Andreassen et al. (2013), conditional FDR, *PLoS Genetics*.
+  [DOI](https://doi.org/10.1371/journal.pgen.1003455)
+- Smeland et al. (2020), conditional FDR for shared loci, *Human
+  Genetics*. [DOI](https://doi.org/10.1007/s00439-019-02060-2)
+- von Berg et al. (2022), PolarMorphism, *Bioinformatics*.
+  [DOI](https://doi.org/10.1093/bioinformatics/btac228)
+- Kessy, Lewin, and Strimmer (2018), whitening and decorrelation, *The
+  American Statistician*.
+  [DOI](https://doi.org/10.1080/00031305.2016.1277159)
+- Conneely and Boehnke (2007), correlated-test p-value adjustment,
+  *American Journal of Human Genetics*.
+  [DOI](https://doi.org/10.1086/522036)
+- Davies (1980), linear combinations of chi-square random variables,
+  *Applied Statistics*. [DOI](https://doi.org/10.2307/2346911)
+- Liu, Tang, and Zhang (2009), chi-square approximation for quadratic
+  forms, *Computational Statistics & Data Analysis*.
+  [DOI](https://doi.org/10.1016/j.csda.2008.11.025)
+- Zeng et al., MAIUP software reference.
+  [Repository](https://github.com/biostatpzeng/MAIUP)
+
+## License
+
+MIT. See `LICENSE`.
+
+# Package index
+
+## Package and data model
+
+Core package documentation and the S4 container used by every workflow.
+
+- [`pleioverse`](https://broccolito.github.io/pleioverse/reference/pleioverse-package.md)
+  [`pleioverse-package`](https://broccolito.github.io/pleioverse/reference/pleioverse-package.md)
+  : pleioverse: fast self-contained pleiotropy simulation and testing
+- [`pleio-class`](https://broccolito.github.io/pleioverse/reference/pleio-class.md)
+  : The pleio simulation class
+
+## Simulation workflow
+
+Simulate pleiotropic data and build the matrices that control
+simulation.
+
+- [`run_pleiosim()`](https://broccolito.github.io/pleioverse/reference/run_pleiosim.md)
+  [`pleiosim()`](https://broccolito.github.io/pleioverse/reference/run_pleiosim.md)
+  : Simulate pleiotropic genetic data
+- [`create_heritable_correlation_matrix()`](https://broccolito.github.io/pleioverse/reference/create_heritable_correlation_matrix.md)
+  : Build a uniform heritable (genetic) correlation matrix
+- [`create_nonheritable_correlation_matrix()`](https://broccolito.github.io/pleioverse/reference/create_nonheritable_correlation_matrix.md)
+  : Build a uniform non-heritable (environmental) input matrix
+- [`create_cohort_makeup_matrix()`](https://broccolito.github.io/pleioverse/reference/create_cohort_makeup_matrix.md)
+  : Build the cohort-makeup (sample-size) matrix
+- [`create_eaf_matrix()`](https://broccolito.github.io/pleioverse/reference/create_eaf_matrix.md)
+  : Build the effect-allele-frequency (EAF) matrix
+- [`create_efs_matrix_template()`](https://broccolito.github.io/pleioverse/reference/create_efs_matrix_template.md)
+  : Build the effect-size (EFS) template matrix
+
+## Test orchestration
+
+Run the full multi-test workflow from a simulated pleio object.
+
+- [`run_pleiotest()`](https://broccolito.github.io/pleioverse/reference/run_pleiotest.md)
+  [`pleiotest()`](https://broccolito.github.io/pleioverse/reference/run_pleiotest.md)
+  : Run the full test suite on a pleio object
+
+## Multiple-association and omnibus tests
+
+Tests for association with any phenotype, including MPAT/MTAR-style
+methods.
+
+- [`run_wald()`](https://broccolito.github.io/pleioverse/reference/run_wald.md)
+  : Wald multi-trait test (inverse-variance quadratic form)
+- [`run_wi()`](https://broccolito.github.io/pleioverse/reference/run_wi.md)
+  : Weighted-identity (WI) multi-trait test
+- [`run_vc()`](https://broccolito.github.io/pleioverse/reference/run_vc.md)
+  : Variance-component (VC / SKAT-style) multi-trait test
+- [`run_sum()`](https://broccolito.github.io/pleioverse/reference/run_sum.md)
+  : Weighted burden (SUM) multi-trait test
+- [`run_dsum()`](https://broccolito.github.io/pleioverse/reference/run_dsum.md)
+  : Direct burden (DSUM) multi-trait test
+- [`run_pcfisher()`](https://broccolito.github.io/pleioverse/reference/run_pcfisher.md)
+  : Principal-component Fisher-combination test (PCFisher)
+- [`run_pclc()`](https://broccolito.github.io/pleioverse/reference/run_pclc.md)
+  : Principal-component linear-combination test (PCLC)
+- [`run_pcminp()`](https://broccolito.github.io/pleioverse/reference/run_pcminp.md)
+  : Principal-component minimum-p test (PCMinP)
+- [`run_minp()`](https://broccolito.github.io/pleioverse/reference/run_minp.md)
+  : Minimum-p test with multivariate-normal correction (MinP)
+- [`run_mixfisher_davies()`](https://broccolito.github.io/pleioverse/reference/run_mixfisher_davies.md)
+  : Mixture-Fisher omnibus (Davies tail)
+- [`run_mixfisher_liu()`](https://broccolito.github.io/pleioverse/reference/run_mixfisher_liu.md)
+  : Mixture-Fisher omnibus (Liu tail)
+- [`run_mixfisher_liumod()`](https://broccolito.github.io/pleioverse/reference/run_mixfisher_liumod.md)
+  : Mixture-Fisher omnibus (modified-Liu tail)
+- [`run_mixtippett_davies()`](https://broccolito.github.io/pleioverse/reference/run_mixtippett_davies.md)
+  : Mixture-Tippett (minimum-p) omnibus (Davies tail)
+- [`run_mixtippett_liu()`](https://broccolito.github.io/pleioverse/reference/run_mixtippett_liu.md)
+  : Mixture-Tippett (minimum-p) omnibus (Liu tail)
+- [`run_mixtippett_liumod()`](https://broccolito.github.io/pleioverse/reference/run_mixtippett_liumod.md)
+  : Mixture-Tippett (minimum-p) omnibus (modified-Liu tail)
+- [`run_mixvar_davies()`](https://broccolito.github.io/pleioverse/reference/run_mixvar_davies.md)
+  : Mixture variance-component omnibus (Davies tail)
+- [`run_mixvar_liu()`](https://broccolito.github.io/pleioverse/reference/run_mixvar_liu.md)
+  : Mixture variance-component omnibus (Liu tail)
+- [`run_mixvar_liumod()`](https://broccolito.github.io/pleioverse/reference/run_mixvar_liumod.md)
+  : Mixture variance-component omnibus (modified-Liu tail)
+- [`run_mixsd_davies()`](https://broccolito.github.io/pleioverse/reference/run_mixsd_davies.md)
+  : Mixture standard-deviation omnibus (Davies tail)
+- [`run_mixsd_liu()`](https://broccolito.github.io/pleioverse/reference/run_mixsd_liu.md)
+  : Mixture standard-deviation omnibus (Liu tail)
+- [`run_mixsd_liumod()`](https://broccolito.github.io/pleioverse/reference/run_mixsd_liumod.md)
+  : Mixture standard-deviation omnibus (modified-Liu tail)
+- [`run_mixada()`](https://broccolito.github.io/pleioverse/reference/run_mixada.md)
+  : Adaptive mixture omnibus (mixAda)
+- [`run_cmats()`](https://broccolito.github.io/pleioverse/reference/run_cmats.md)
+  : CMATS burden-augmented adaptive omnibus association test
+- [`run_emats()`](https://broccolito.github.io/pleioverse/reference/run_emats.md)
+  : EMATS leading-eigenvector adaptive omnibus association test
+- [`run_tates()`](https://broccolito.github.io/pleioverse/reference/run_tates.md)
+  : TATES (extended Simes) multi-phenotype test
+- [`run_metacca()`](https://broccolito.github.io/pleioverse/reference/run_metacca.md)
+  : metaCCA canonical-correlation association test
+
+## Pleiotropy-specific tests
+
+Pairwise and joint tests for variants associated with multiple
+phenotypes.
+
+- [`run_placo()`](https://broccolito.github.io/pleioverse/reference/run_placo.md)
+  : PLACO+ pleiotropy test on a phenotype pair
+- [`run_pgctest()`](https://broccolito.github.io/pleioverse/reference/run_pgctest.md)
+  : PGCtest (CompTestER) normal-product test on a phenotype pair
+- [`run_maiup()`](https://broccolito.github.io/pleioverse/reference/run_maiup.md)
+  : MAIUP empirical-FDR pleiotropy screen on a phenotype pair
+- [`run_conjfdr()`](https://broccolito.github.io/pleioverse/reference/run_conjfdr.md)
+  : Conjunctional conditional FDR on a phenotype pair
+- [`run_polarmorphism()`](https://broccolito.github.io/pleioverse/reference/run_polarmorphism.md)
+  : PolarMorphism pleiotropy test across all phenotypes
+
+## Result aggregation
+
+Combine already-computed p-value columns.
+
+- [`run_acat()`](https://broccolito.github.io/pleioverse/reference/run_acat.md)
+  : ACAT aggregated-Cauchy omnibus over existing results
+
+# Articles
+
+### Simulation
+
+How pleioverse generates genotypes, phenotypes, correlations, and cohort
+overlap.
+
+- [Simulating
+  Genotypes](https://broccolito.github.io/pleioverse/articles/simulation-genotypes.md):
+- [Simulating
+  Phenotypes](https://broccolito.github.io/pleioverse/articles/simulation-phenotypes.md):
+- [Simulating Correlated
+  Phenotypes](https://broccolito.github.io/pleioverse/articles/simulation-correlated-phenotypes.md):
+- [Cohorts, Overlap, and Custom
+  Correlations](https://broccolito.github.io/pleioverse/articles/simulation-cohorts-correlations.md):
+
+### Running and Interpreting Tests
+
+End-to-end testing workflows, ACAT combination, and result
+interpretation.
+
+- [Running the Test
+  Suite](https://broccolito.github.io/pleioverse/articles/running-tests.md):
+- [Combining Tests with
+  ACAT](https://broccolito.github.io/pleioverse/articles/combining-tests-acat.md):
+- [Understanding Output P-Values and Result
+  Columns](https://broccolito.github.io/pleioverse/articles/understanding-output-p-values.md):
+- [Documentation
+  Checklist](https://broccolito.github.io/pleioverse/articles/documentation-checklist.md):
+
+### Reimplementation Validation
+
+Parity and runtime checks for the rewritten R/C++ methods.
+
+- [Reimplementation
+  Parity](https://broccolito.github.io/pleioverse/articles/reimplementation-parity.md):
+- [Reimplementation
+  Speed](https://broccolito.github.io/pleioverse/articles/reimplementation-speed.md):
+
+### Method Articles
+
+One article per implemented statistical method.
+
+- [Wald multi-trait test (inverse-variance quadratic
+  form)](https://broccolito.github.io/pleioverse/articles/method-wald.md):
+- [Weighted-identity (WI) multi-trait
+  test](https://broccolito.github.io/pleioverse/articles/method-wi.md):
+- [Variance-component (VC / SKAT-style) multi-trait
+  test](https://broccolito.github.io/pleioverse/articles/method-vc.md):
+- [Weighted burden (SUM) multi-trait
+  test](https://broccolito.github.io/pleioverse/articles/method-sum.md):
+- [Direct burden (DSUM) multi-trait
+  test](https://broccolito.github.io/pleioverse/articles/method-dsum.md):
+- [Principal-component Fisher-combination test
+  (PCFisher)](https://broccolito.github.io/pleioverse/articles/method-pcfisher.md):
+- [Principal-component linear-combination test
+  (PCLC)](https://broccolito.github.io/pleioverse/articles/method-pclc.md):
+- [Principal-component minimum-p test
+  (PCMinP)](https://broccolito.github.io/pleioverse/articles/method-pcminp.md):
+- [Minimum-p test with multivariate-normal correction
+  (MinP)](https://broccolito.github.io/pleioverse/articles/method-minp.md):
+- [Mixture-Fisher omnibus (Davies
+  tail)](https://broccolito.github.io/pleioverse/articles/method-mixfisher-davies.md):
+- [Mixture-Fisher omnibus (Liu
+  tail)](https://broccolito.github.io/pleioverse/articles/method-mixfisher-liu.md):
+- [Mixture-Fisher omnibus (modified-Liu
+  tail)](https://broccolito.github.io/pleioverse/articles/method-mixfisher-liumod.md):
+- [Mixture-Tippett (minimum-p) omnibus (Davies
+  tail)](https://broccolito.github.io/pleioverse/articles/method-mixtippett-davies.md):
+- [Mixture-Tippett (minimum-p) omnibus (Liu
+  tail)](https://broccolito.github.io/pleioverse/articles/method-mixtippett-liu.md):
+- [Mixture-Tippett (minimum-p) omnibus (modified-Liu
+  tail)](https://broccolito.github.io/pleioverse/articles/method-mixtippett-liumod.md):
+- [Mixture variance-component omnibus (Davies
+  tail)](https://broccolito.github.io/pleioverse/articles/method-mixvar-davies.md):
+- [Mixture variance-component omnibus (Liu
+  tail)](https://broccolito.github.io/pleioverse/articles/method-mixvar-liu.md):
+- [Mixture variance-component omnibus (modified-Liu
+  tail)](https://broccolito.github.io/pleioverse/articles/method-mixvar-liumod.md):
+- [Mixture standard-deviation omnibus (Davies
+  tail)](https://broccolito.github.io/pleioverse/articles/method-mixsd-davies.md):
+- [Mixture standard-deviation omnibus (Liu
+  tail)](https://broccolito.github.io/pleioverse/articles/method-mixsd-liu.md):
+- [Mixture standard-deviation omnibus (modified-Liu
+  tail)](https://broccolito.github.io/pleioverse/articles/method-mixsd-liumod.md):
+- [Adaptive mixture omnibus
+  (mixAda)](https://broccolito.github.io/pleioverse/articles/method-mixada.md):
+- [CMATS burden-augmented adaptive omnibus association
+  test](https://broccolito.github.io/pleioverse/articles/method-cmats.md):
+- [EMATS leading-eigenvector adaptive omnibus association
+  test](https://broccolito.github.io/pleioverse/articles/method-emats.md):
+- [TATES (extended Simes) multi-phenotype
+  test](https://broccolito.github.io/pleioverse/articles/method-tates.md):
+- [metaCCA canonical-correlation association
+  test](https://broccolito.github.io/pleioverse/articles/method-metacca.md):
+- [PLACO+ pleiotropy test on a phenotype
+  pair](https://broccolito.github.io/pleioverse/articles/method-placo.md):
+- [PGCtest (CompTestER) normal-product test on a phenotype
+  pair](https://broccolito.github.io/pleioverse/articles/method-pgctest.md):
+- [MAIUP empirical-FDR pleiotropy screen on a phenotype
+  pair](https://broccolito.github.io/pleioverse/articles/method-maiup.md):
+- [Conjunctional conditional FDR on a phenotype
+  pair](https://broccolito.github.io/pleioverse/articles/method-conjfdr.md):
+- [PolarMorphism pleiotropy test across all
+  phenotypes](https://broccolito.github.io/pleioverse/articles/method-polarmorphism.md):
+- [ACAT aggregated-Cauchy omnibus over existing
+  results](https://broccolito.github.io/pleioverse/articles/method-acat.md):

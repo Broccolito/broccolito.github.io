@@ -1,0 +1,50 @@
+pandoc: '3.10'
+pkgdown: 2.2.0
+pkgdown_sha: ~
+articles:
+  combining-tests-acat: combining-tests-acat.html
+  documentation-checklist: documentation-checklist.html
+  method-acat: method-acat.html
+  method-cmats: method-cmats.html
+  method-conjfdr: method-conjfdr.html
+  method-dsum: method-dsum.html
+  method-emats: method-emats.html
+  method-maiup: method-maiup.html
+  method-metacca: method-metacca.html
+  method-minp: method-minp.html
+  method-mixada: method-mixada.html
+  method-mixfisher-davies: method-mixfisher-davies.html
+  method-mixfisher-liu: method-mixfisher-liu.html
+  method-mixfisher-liumod: method-mixfisher-liumod.html
+  method-mixsd-davies: method-mixsd-davies.html
+  method-mixsd-liu: method-mixsd-liu.html
+  method-mixsd-liumod: method-mixsd-liumod.html
+  method-mixtippett-davies: method-mixtippett-davies.html
+  method-mixtippett-liu: method-mixtippett-liu.html
+  method-mixtippett-liumod: method-mixtippett-liumod.html
+  method-mixvar-davies: method-mixvar-davies.html
+  method-mixvar-liu: method-mixvar-liu.html
+  method-mixvar-liumod: method-mixvar-liumod.html
+  method-pcfisher: method-pcfisher.html
+  method-pclc: method-pclc.html
+  method-pcminp: method-pcminp.html
+  method-pgctest: method-pgctest.html
+  method-placo: method-placo.html
+  method-polarmorphism: method-polarmorphism.html
+  method-sum: method-sum.html
+  method-tates: method-tates.html
+  method-vc: method-vc.html
+  method-wald: method-wald.html
+  method-wi: method-wi.html
+  reimplementation-parity: reimplementation-parity.html
+  reimplementation-speed: reimplementation-speed.html
+  running-tests: running-tests.html
+  simulation-cohorts-correlations: simulation-cohorts-correlations.html
+  simulation-correlated-phenotypes: simulation-correlated-phenotypes.html
+  simulation-genotypes: simulation-genotypes.html
+  simulation-phenotypes: simulation-phenotypes.html
+  understanding-output-p-values: understanding-output-p-values.html
+last_built: 2026-07-09T09:06Z
+urls:
+  reference: https://broccolito.github.io/pleioverse/reference
+  article: https://broccolito.github.io/pleioverse/articles
