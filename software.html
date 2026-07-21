@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     :root {
-      --accent:  #5e60ce;
+      --accent:  #1c1c1e;
       --dark:    #1c1c1e;
       --mid:     #4a4a52;
       --light:   #8a8a96;
@@ -249,6 +249,96 @@
     .sw-link::after { content: '→'; font-weight: normal; }
     .sw-link:hover { gap: 0.65rem; }
 
+    /* ── CV MODAL ── */
+    .cv-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+    }
+    .cv-modal.open { display: block; }
+
+    .cv-modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(28, 28, 30, 0.55);
+      backdrop-filter: blur(3px);
+      animation: cv-fade 0.2s ease;
+    }
+
+    @keyframes cv-fade { from { opacity: 0; } to { opacity: 1; } }
+
+    .cv-modal-dialog {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: min(880px, 92vw);
+      height: min(90vh, 1150px);
+      background: #fff;
+      border-radius: 6px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.32);
+      animation: cv-rise 0.22s ease;
+    }
+
+    @keyframes cv-rise {
+      from { opacity: 0; transform: translate(-50%, -46%); }
+      to   { opacity: 1; transform: translate(-50%, -50%); }
+    }
+
+    .cv-modal-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.55rem 0.9rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      flex-shrink: 0;
+    }
+
+    .cv-modal-title {
+      font-size: 0.72rem;
+      font-weight: bold;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--dark);
+    }
+
+    .cv-modal-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .cv-modal-open {
+      font-size: 0.72rem;
+      color: var(--mid);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .cv-modal-open:hover { color: var(--accent); }
+
+    .cv-modal-close {
+      border: none;
+      background: none;
+      font-size: 0.9rem;
+      line-height: 1;
+      color: var(--light);
+      cursor: pointer;
+      padding: 0.15rem 0.2rem;
+      transition: color 0.15s;
+    }
+    .cv-modal-close:hover { color: var(--dark); }
+
+    .cv-modal-frame {
+      flex: 1;
+      width: 100%;
+      border: none;
+    }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 660px) {
       .page {
@@ -259,6 +349,7 @@
       .sidebar { position: static; }
       .profile-photo { max-width: 150px; }
       header { padding: 0 1.25rem; }
+      .cv-modal-dialog { width: 96vw; height: 92vh; }
     }
   </style>
 </head>
@@ -278,7 +369,7 @@
           <a href="index.html">About</a>
           <a href="software.html" class="active">Software</a>
           <a href="publications.html">Publications</a>
-          <a href="Wanjun Gu CV.pdf" target="_blank">CV</a>
+          <a href="Wanjun Gu CV.pdf" id="cvLink" target="_blank">CV</a>
         </nav>
         <ul class="profile-links">
           <li><a href="mailto:wanjun.gu@ucsf.edu">Email</a></li>
@@ -300,6 +391,30 @@
           <span class="sw-num">01</span>
           <div class="sw-body">
             <div class="sw-content">
+              <div class="sw-name">BioRouter <span class="sw-tag">UCSF</span></div>
+              <p class="sw-desc">An AI-powered integrated research environment that unifies commercial, institution-hosted, and local AI models for secure biomedical discovery. Enables researchers to coordinate AI agents across clinical databases, biomedical knowledge graphs, and literature while maintaining full data security.</p>
+              <a class="sw-link" href="http://biorouter.ucsf.edu/" target="_blank">Learn More</a>
+            </div>
+            <img class="sw-thumb" src="pictures/biorouter-logo.png" alt="BioRouter logo">
+          </div>
+        </div>
+
+        <div class="software-item">
+          <span class="sw-num">02</span>
+          <div class="sw-body">
+            <div class="sw-content">
+              <div class="sw-name">BioOKF <span class="sw-tag">Open Source</span></div>
+              <p class="sw-desc">Biomedical Open Knowledge Format. A typed, structured open format that gives AI agents a closed vocabulary of 28 node types and 35 relationship predicates to map any source into a provenance-tracked biomedical knowledge graph. Ships as an open-source Rust stack with a scriptable CLI, an MCP server, and a desktop Studio.</p>
+              <a class="sw-link" href="https://broccolito.github.io/BioOKF/" target="_blank">Learn More</a>
+            </div>
+            <img class="sw-thumb" src="pictures/biookf-logo.svg" alt="BioOKF logo">
+          </div>
+        </div>
+
+        <div class="software-item">
+          <span class="sw-num">03</span>
+          <div class="sw-body">
+            <div class="sw-content">
               <div class="sw-name">tKOI <span class="sw-tag">R package</span></div>
               <p class="sw-desc">Transcriptomic Knowledge-graph-driven Omics Integration for Human Pathway Analysis. Combines transcriptomic data with a human-specific biological knowledge graph for network-aware enrichment, functional interpretation, and gene prioritization via personalized PageRank.</p>
               <a class="sw-link" href="https://baranzinilab.github.io/tkoi/index.html" target="_blank">Documentation</a>
@@ -309,7 +424,7 @@
         </div>
 
         <div class="software-item">
-          <span class="sw-num">02</span>
+          <span class="sw-num">04</span>
           <div class="sw-body">
             <div class="sw-content">
               <div class="sw-name">pKOI <span class="sw-tag">R package</span></div>
@@ -321,7 +436,7 @@
         </div>
 
         <div class="software-item">
-          <span class="sw-num">03</span>
+          <span class="sw-num">05</span>
           <div class="sw-body">
             <div class="sw-content">
               <div class="sw-name">KDPS <span class="sw-tag">R package</span></div>
@@ -333,7 +448,7 @@
         </div>
 
         <div class="software-item">
-          <span class="sw-num">04</span>
+          <span class="sw-num">06</span>
           <div class="sw-body">
             <div class="sw-content">
               <div class="sw-name">ggmugs <span class="sw-tag">CRAN</span></div>
@@ -345,7 +460,7 @@
         </div>
 
         <div class="software-item">
-          <span class="sw-num">05</span>
+          <span class="sw-num">07</span>
           <div class="sw-body">
             <div class="sw-content">
               <div class="sw-name">bolt4jr <span class="sw-tag">CRAN</span></div>
@@ -356,7 +471,7 @@
         </div>
 
         <div class="software-item">
-          <span class="sw-num">06</span>
+          <span class="sw-num">08</span>
           <div class="sw-body">
             <div class="sw-content">
               <div class="sw-name">gptr <span class="sw-tag">CRAN</span></div>
@@ -368,19 +483,7 @@
         </div>
 
         <div class="software-item">
-          <span class="sw-num">07</span>
-          <div class="sw-body">
-            <div class="sw-content">
-              <div class="sw-name">BioRouter <span class="sw-tag">UCSF</span></div>
-              <p class="sw-desc">An AI-powered integrated research environment that unifies commercial, institution-hosted, and local AI models for secure biomedical discovery. Enables researchers to coordinate AI agents across clinical databases, biomedical knowledge graphs, and literature while maintaining full data security.</p>
-              <a class="sw-link" href="https://baranzinilab.github.io/biorouter-landing/intro.html" target="_blank">Learn More</a>
-            </div>
-            <img class="sw-thumb" src="pictures/biorouter-logo.png" alt="BioRouter logo">
-          </div>
-        </div>
-
-        <div class="software-item">
-          <span class="sw-num">08</span>
+          <span class="sw-num">09</span>
           <div class="sw-body">
             <div class="sw-content">
               <div class="sw-name">MedCP <span class="sw-tag">GitHub</span></div>
@@ -392,7 +495,7 @@
         </div>
 
         <div class="software-item">
-          <span class="sw-num">09</span>
+          <span class="sw-num">10</span>
           <div class="sw-body">
             <div class="sw-content">
               <div class="sw-name">Bioscratch <span class="sw-tag">macOS</span></div>
@@ -406,6 +509,34 @@
       </section>
     </main>
   </div>
+
+  <div class="cv-modal" id="cvModal" aria-hidden="true">
+    <div class="cv-modal-backdrop" data-cv-close></div>
+    <div class="cv-modal-dialog" role="dialog" aria-modal="true" aria-label="Curriculum Vitae">
+      <div class="cv-modal-bar">
+        <span class="cv-modal-title">Curriculum Vitae</span>
+        <div class="cv-modal-actions">
+          <a class="cv-modal-open" href="Wanjun Gu CV.pdf" target="_blank" rel="noopener">Open in new tab ↗</a>
+          <button class="cv-modal-close" type="button" data-cv-close aria-label="Close CV preview">✕</button>
+        </div>
+      </div>
+      <iframe class="cv-modal-frame" src="Wanjun Gu CV.pdf" title="Wanjun Gu CV"></iframe>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var modal = document.getElementById('cvModal');
+      var link = document.getElementById('cvLink');
+      if (!modal || !link) return;
+      function open(e) { e.preventDefault(); modal.classList.add('open'); document.body.style.overflow = 'hidden'; }
+      function close() { modal.classList.remove('open'); document.body.style.overflow = ''; }
+      link.addEventListener('click', open);
+      var closers = modal.querySelectorAll('[data-cv-close]');
+      for (var i = 0; i < closers.length; i++) closers[i].addEventListener('click', close);
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && modal.classList.contains('open')) close(); });
+    })();
+  </script>
 
 </body>
 </html>

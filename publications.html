@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     :root {
-      --accent:  #5e60ce;
+      --accent:  #1c1c1e;
       --dark:    #1c1c1e;
       --mid:     #4a4a52;
       --light:   #8a8a96;
@@ -210,7 +210,7 @@
       font-family: Arial, Helvetica, sans-serif;
       font-size: 0.72rem;
       padding: 0.25rem 0.6rem;
-      border-radius: 20px;
+      border-radius: 5px;
       border: 1px solid var(--border);
       background: #fff;
       color: var(--mid);
@@ -290,7 +290,7 @@
     .tag {
       font-size: 0.67rem;
       padding: 0.15rem 0.5rem;
-      border-radius: 20px;
+      border-radius: 5px;
       font-weight: bold;
       letter-spacing: 0.02em;
       white-space: nowrap;
@@ -360,6 +360,96 @@
       display: none;
     }
 
+    /* ── CV MODAL ── */
+    .cv-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+    }
+    .cv-modal.open { display: block; }
+
+    .cv-modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(28, 28, 30, 0.55);
+      backdrop-filter: blur(3px);
+      animation: cv-fade 0.2s ease;
+    }
+
+    @keyframes cv-fade { from { opacity: 0; } to { opacity: 1; } }
+
+    .cv-modal-dialog {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: min(880px, 92vw);
+      height: min(90vh, 1150px);
+      background: #fff;
+      border-radius: 6px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.32);
+      animation: cv-rise 0.22s ease;
+    }
+
+    @keyframes cv-rise {
+      from { opacity: 0; transform: translate(-50%, -46%); }
+      to   { opacity: 1; transform: translate(-50%, -50%); }
+    }
+
+    .cv-modal-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.55rem 0.9rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      flex-shrink: 0;
+    }
+
+    .cv-modal-title {
+      font-size: 0.72rem;
+      font-weight: bold;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--dark);
+    }
+
+    .cv-modal-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .cv-modal-open {
+      font-size: 0.72rem;
+      color: var(--mid);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .cv-modal-open:hover { color: var(--accent); }
+
+    .cv-modal-close {
+      border: none;
+      background: none;
+      font-size: 0.9rem;
+      line-height: 1;
+      color: var(--light);
+      cursor: pointer;
+      padding: 0.15rem 0.2rem;
+      transition: color 0.15s;
+    }
+    .cv-modal-close:hover { color: var(--dark); }
+
+    .cv-modal-frame {
+      flex: 1;
+      width: 100%;
+      border: none;
+    }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 660px) {
       .page {
@@ -370,6 +460,7 @@
       .sidebar { position: static; }
       .profile-photo { max-width: 150px; }
       header { padding: 0 1.25rem; }
+      .cv-modal-dialog { width: 96vw; height: 92vh; }
     }
   </style>
 </head>
@@ -389,7 +480,7 @@
           <a href="index.html">About</a>
           <a href="software.html">Software</a>
           <a href="publications.html" class="active">Publications</a>
-          <a href="Wanjun Gu CV.pdf" target="_blank">CV</a>
+          <a href="Wanjun Gu CV.pdf" id="cvLink" target="_blank">CV</a>
         </nav>
         <ul class="profile-links">
           <li><a href="mailto:wanjun.gu@ucsf.edu">Email</a></li>
@@ -1010,6 +1101,34 @@
         btn.textContent = expanded ? 'Show less' : 'Read more';
       });
     });
+  </script>
+
+  <div class="cv-modal" id="cvModal" aria-hidden="true">
+    <div class="cv-modal-backdrop" data-cv-close></div>
+    <div class="cv-modal-dialog" role="dialog" aria-modal="true" aria-label="Curriculum Vitae">
+      <div class="cv-modal-bar">
+        <span class="cv-modal-title">Curriculum Vitae</span>
+        <div class="cv-modal-actions">
+          <a class="cv-modal-open" href="Wanjun Gu CV.pdf" target="_blank" rel="noopener">Open in new tab ↗</a>
+          <button class="cv-modal-close" type="button" data-cv-close aria-label="Close CV preview">✕</button>
+        </div>
+      </div>
+      <iframe class="cv-modal-frame" src="Wanjun Gu CV.pdf" title="Wanjun Gu CV"></iframe>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var modal = document.getElementById('cvModal');
+      var link = document.getElementById('cvLink');
+      if (!modal || !link) return;
+      function open(e) { e.preventDefault(); modal.classList.add('open'); document.body.style.overflow = 'hidden'; }
+      function close() { modal.classList.remove('open'); document.body.style.overflow = ''; }
+      link.addEventListener('click', open);
+      var closers = modal.querySelectorAll('[data-cv-close]');
+      for (var i = 0; i < closers.length; i++) closers[i].addEventListener('click', close);
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && modal.classList.contains('open')) close(); });
+    })();
   </script>
 
 </body>
