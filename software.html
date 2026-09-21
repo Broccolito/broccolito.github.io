@@ -253,6 +253,22 @@
     .sw-link::after { content: '→'; font-weight: normal; }
     .sw-link:hover { gap: 0.65rem; }
 
+    .sw-paper {
+      font-size: 0.8rem;
+      color: var(--light);
+      line-height: 1.5;
+      margin-bottom: 0.6rem;
+    }
+
+    .sw-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem 1.4rem;
+    }
+    .sw-links .sw-link { transition: gap 0.18s, margin-right 0.18s; }
+    /* cancels the wider hover gap so the neighbouring link doesn't shift */
+    .sw-links .sw-link:hover { margin-right: -0.25rem; }
+
     /* ── CV MODAL ── */
     .cv-modal {
       display: none;
@@ -497,7 +513,11 @@
             <div class="sw-content">
               <div class="sw-name">MedCP <span class="sw-tag">GitHub</span></div>
               <p class="sw-desc">Transforms Claude Desktop into a medical AI assistant with secure, local access to electronic health records and biomedical knowledge graphs. Allows healthcare professionals and researchers to process sensitive patient data on-device while leveraging comprehensive medical knowledge for clinical decision support.</p>
-              <a class="sw-link" href="https://github.com/BaranziniLab/MedCP" target="_blank">View on GitHub</a>
+              <p class="sw-paper">Published in <em>Frontiers in Artificial Intelligence</em> (2026)</p>
+              <div class="sw-links">
+                <a class="sw-link" href="https://github.com/BaranziniLab/MedCP" target="_blank">View on GitHub</a>
+                <a class="sw-link" href="https://doi.org/10.3389/frai.2026.1883853" target="_blank">Read the Paper</a>
+              </div>
             </div>
             <img class="sw-thumb" src="pictures/medcp-logo.png" alt="MedCP logo">
           </div>
