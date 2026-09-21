@@ -17,6 +17,8 @@
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    html { font-size: 109.375%; } /* 17.5px at the default 16px; every rem size scales from this */
+
     body {
       font-family: Arial, Helvetica, sans-serif;
       background: var(--bg);
@@ -451,7 +453,7 @@
     }
 
     /* ── RESPONSIVE ── */
-    @media (max-width: 660px) {
+    @media (max-width: 720px) {
       .page {
         grid-template-columns: 1fr;
         padding: 2rem 1.25rem 5rem;
@@ -461,6 +463,10 @@
       .profile-photo { max-width: 150px; }
       header { padding: 0 1.25rem; }
       .cv-modal-dialog { width: 96vw; height: 92vh; }
+    }
+
+    @media (max-width: 350px) {
+      .cv-modal-title, .cv-modal-open { font-size: 0.66rem; }
     }
   </style>
 </head>
@@ -512,15 +518,49 @@
         </div>
 
         <div class="results-bar">
-          <span id="results-count">30 publications</span>
+          <span id="results-count">32 publications</span>
         </div>
 
         <div id="pub-list">
 
           <div class="pub-section-label" id="label-first">First- &amp; Co-first-authored</div>
 
-          <div class="pub-item" data-tags="Genomics|Physiology" data-section="first">
+          <div class="pub-item" data-tags="Medical Informatics|Machine Learning & AI" data-section="first">
             <span class="pub-num">01</span>
+            <div>
+              <h3 class="pub-title">An agentic AI framework connecting language models to electronic health records and a biomedical knowledge graph for real-world evidence</h3>
+              <p class="pub-meta">Bellucci G*, Gu W*, Rose PW, et al. &nbsp;·&nbsp; <em>Frontiers in Artificial Intelligence</em>, 9, 1883853 (2026)</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Medical Informatics">Medical Informatics</span>
+                <span class="tag" data-tag="Machine Learning & AI">Machine Learning &amp; AI</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">MedCP is an agentic AI framework that uses the Model Context Protocol (MCP) to let large language models (LLMs), under interactive human supervision, query an OMOP-standardized electronic health record (EHR) database from an academic health system (&gt;7 million patients) together with SPOKE, a curated biomedical knowledge graph. Knowledge-graph access improved overall mean scores for both GPT-5.5 and Claude Opus 4.8 across 100 clinical research benchmark tasks and raised multiple-choice accuracy on 617 BiomixQA biomedical questions. In a case study, disease co-occurrence patterns in the EHR correlated with molecular network similarity, surfacing mechanistic hypotheses, and a standardized research protocol replicated published observational studies in hours rather than months, with study design and interpretation kept under expert supervision.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+              <a class="pub-doi" href="https://doi.org/10.3389/frai.2026.1883853" target="_blank">DOI →</a>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Genomics|Physiology" data-section="first">
+            <span class="pub-num">02</span>
+            <div>
+              <h3 class="pub-title">E-cigarette vaping is associated with pro-fibrotic gene expression in kidney and liver tissues</h3>
+              <p class="pub-meta">Gu W, Chang H, Saini P, et al. &nbsp;·&nbsp; <em>Journal of Molecular Medicine</em>, 104, 99 (2026)</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Genomics">Genomics</span>
+                <span class="tag" data-tag="Physiology">Physiology</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">Mice exposed to e-cigarette vapor with and without nicotine for one hour daily over three months showed organ-specific transcriptomic changes. Nicotine drove greater alterations in the kidney (oxidative stress and inflammation via Car3 and Foxo3), while vehicle chemicals produced greater changes in the liver (disrupted lipid metabolism and immune signaling via Il6ra and Lpin1). Chronic e-cigarette inhalation triggers gene expression patterns consistent with promoting fibrosis and metabolic dysfunction across organ systems, highlighting the need for further investigation into long-term health consequences.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+              <a class="pub-doi" href="https://doi.org/10.1007/s00109-026-02699-1" target="_blank">DOI →</a>
+            </div>
+          </div>
+
+          <div class="pub-item" data-tags="Genomics|Physiology" data-section="first">
+            <span class="pub-num">03</span>
             <div>
               <h3 class="pub-title">Time-restricted feeding ameliorates type 2 diabetes via gut microbiota–bile acids-liver axis</h3>
               <p class="pub-meta">Ma S*, Gu W*, Bellucci G, et al. &nbsp;·&nbsp; Research Square [Preprint], 2026 &nbsp;·&nbsp; Under review at <em>Nature Communications</em></p>
@@ -536,25 +576,8 @@
             </div>
           </div>
 
-          <div class="pub-item" data-tags="Genomics|Physiology" data-section="first">
-            <span class="pub-num">02</span>
-            <div>
-              <h3 class="pub-title">E-cigarette vaping is associated with pro-fibrotic gene expression in kidney and liver tissues</h3>
-              <p class="pub-meta">Gu W, Chang H, Saini P, et al. &nbsp;·&nbsp; Research Square [Preprint], 2025</p>
-              <div class="pub-tags">
-                <span class="tag" data-tag="Genomics">Genomics</span>
-                <span class="tag" data-tag="Physiology">Physiology</span>
-              </div>
-              <div class="pub-abstract-wrap">
-                <p class="pub-abstract">Mice exposed to e-cigarette vapor with and without nicotine for one hour daily over three months showed organ-specific transcriptomic changes. Nicotine drove greater alterations in the kidney (oxidative stress via Car3 and Foxo3), while vehicle chemicals produced greater changes in the liver (disrupted lipid metabolism and immune signaling via Il6ra and Lpin1). Chronic e-cigarette inhalation triggers gene expression patterns consistent with promoting fibrosis and metabolic dysfunction across organ systems, highlighting the need for further investigation into long-term health consequences.</p>
-                <button class="abstract-toggle">Read more</button>
-              </div>
-              <a class="pub-doi" href="https://doi.org/10.21203/rs.3.rs-7609713/v1" target="_blank">DOI →</a>
-            </div>
-          </div>
-
           <div class="pub-item" data-tags="Human Genetics|Genetic Epidemiology|Genomics|Machine Learning & AI" data-section="first">
-            <span class="pub-num">03</span>
+            <span class="pub-num">04</span>
             <div>
               <h3 class="pub-title">Evaluating the contribution of genome 3D folding to variation in human height using machine learning</h3>
               <p class="pub-meta">Gu W, Gilbertson EN, Baranzini SE, et al. &nbsp;·&nbsp; bioRxiv [Preprint], 2025</p>
@@ -573,7 +596,7 @@
           </div>
 
           <div class="pub-item" data-tags="Genomics|Physiology|Machine Learning & AI" data-section="first">
-            <span class="pub-num">04</span>
+            <span class="pub-num">05</span>
             <div>
               <h3 class="pub-title">Baseline metabolomic profile as potential biomarker for weight change after Roux-en-Y gastric bypass (RYGB) surgery</h3>
               <p class="pub-meta">Gu W, Deng S, Stylopoulos N, et al. &nbsp;·&nbsp; Research Square [Preprint], 2025</p>
@@ -591,7 +614,7 @@
           </div>
 
           <div class="pub-item" data-tags="Genetic Epidemiology" data-section="first">
-            <span class="pub-num">05</span>
+            <span class="pub-num">06</span>
             <div>
               <h3 class="pub-title">Kinship Decouple and Phenotype Selection (KDPS): a tool for phenotype-aware decoupling of related subjects</h3>
               <p class="pub-meta">Gu W, Xi J, Cao S, et al. &nbsp;·&nbsp; <em>Briefings in Bioinformatics</em>, 26, bbaf561 (2025)</p>
@@ -607,7 +630,7 @@
           </div>
 
           <div class="pub-item" data-tags="Human Genetics|Genomics|Physiology" data-section="first">
-            <span class="pub-num">06</span>
+            <span class="pub-num">07</span>
             <div>
               <h3 class="pub-title">Genetic adaptations shaping survival, pregnancy, and life at high altitude and sea level</h3>
               <p class="pub-meta">Gu W, Lawrence ES, Evans AM, et al. &nbsp;·&nbsp; <em>Philosophical Transactions of the Royal Society B</em>, 380(1933):20240170 (2025)</p>
@@ -625,7 +648,7 @@
           </div>
 
           <div class="pub-item" data-tags="Human Genetics|Genomics|Physiology" data-section="first">
-            <span class="pub-num">07</span>
+            <span class="pub-num">08</span>
             <div>
               <h3 class="pub-title">Adaptive PRKAA1 variant in Andeans is associated with improved ventilation and sleep phenotypes</h3>
               <p class="pub-meta">Lawrence ES*, Gu W*, Kong MC, et al. &nbsp;·&nbsp; <em>iScience</em>, 28(8):112911 (2025)</p>
@@ -643,7 +666,7 @@
           </div>
 
           <div class="pub-item" data-tags="Human Genetics|Genomics|Physiology" data-section="first">
-            <span class="pub-num">08</span>
+            <span class="pub-num">09</span>
             <div>
               <h3 class="pub-title">Functional EPAS1/HIF2A missense variant is associated with hematocrit in Andean highlanders</h3>
               <p class="pub-meta">Lawrence ES*, Gu W*, Bohlender R, et al. &nbsp;·&nbsp; <em>Science Advances</em>, 10(6), eadj5661 (2024)</p>
@@ -661,7 +684,7 @@
           </div>
 
           <div class="pub-item" data-tags="Genomics" data-section="first">
-            <span class="pub-num">09</span>
+            <span class="pub-num">10</span>
             <div>
               <h3 class="pub-title">Transcriptome meta-analysis of Kawasaki disease in humans and mice</h3>
               <p class="pub-meta">Gu W, Mirsaidi-Madjdabadi S, Ramirez F Jr, et al. &nbsp;·&nbsp; <em>Frontiers in Pediatrics</em>, 12, 1423958 (2024)</p>
@@ -677,7 +700,7 @@
           </div>
 
           <div class="pub-item" data-tags="Physiology" data-section="first">
-            <span class="pub-num">10</span>
+            <span class="pub-num">11</span>
             <div>
               <h3 class="pub-title">Preserved peak exercise capacity in Andean highlanders with Chronic Mountain Sickness both before and after isovolumic hemodilution</h3>
               <p class="pub-meta">Anza-Ramirez C*, Gu W*, Macarlupu JL, et al. &nbsp;·&nbsp; <em>Journal of Applied Physiology</em> (2022)</p>
@@ -693,7 +716,7 @@
           </div>
 
           <div class="pub-item" data-tags="Genomics|Physiology" data-section="first">
-            <span class="pub-num">11</span>
+            <span class="pub-num">12</span>
             <div>
               <h3 class="pub-title">Energy Metabolism Dysregulation in Chronic Kidney Disease</h3>
               <p class="pub-meta">Li Y*, Gu W*, Hepokoski M, et al. &nbsp;·&nbsp; <em>Kidney360</em>, 4, 1080–1094 (2023)</p>
@@ -709,7 +732,7 @@
           </div>
 
           <div class="pub-item" data-tags="Physiology" data-section="first">
-            <span class="pub-num">12</span>
+            <span class="pub-num">13</span>
             <div>
               <h3 class="pub-title">Heterogeneity in lobar and near-acini deposition of inhaled aerosol in the mouse lung</h3>
               <p class="pub-meta">Gu W, Darquenne C. &nbsp;·&nbsp; <em>Journal of Aerosol Science</em>, 151, 105642 (2021)</p>
@@ -725,7 +748,7 @@
           </div>
 
           <div class="pub-item" data-tags="Medical Informatics" data-section="first">
-            <span class="pub-num">13</span>
+            <span class="pub-num">14</span>
             <div>
               <h3 class="pub-title">Development of a novel radiographic angle to assess the calcaneal tuberosity enlargement in insertional Achilles tendinopathy</h3>
               <p class="pub-meta">Gu W, Carpenter ML, Zhu M, et al. &nbsp;·&nbsp; <em>Journal of the Foot &amp; Ankle</em>, 19(3):7 (2026)</p>
@@ -742,8 +765,25 @@
 
           <div class="pub-section-label" id="label-co">Co-authored</div>
 
+          <div class="pub-item" data-tags="Human Genetics|Physiology" data-section="co">
+            <span class="pub-num">15</span>
+            <div>
+              <h3 class="pub-title">Ventilatory and heart rate responses to hypoxia in pre- and post-menopausal ethnically Tibetan women residing at ~3800 m in Mustang, Nepal</h3>
+              <p class="pub-meta">Moya EA, Yu JJ, Craig SR, Gu W, et al. &nbsp;·&nbsp; <em>Journal of Physiology</em> (2026)</p>
+              <div class="pub-tags">
+                <span class="tag" data-tag="Human Genetics">Human Genetics</span>
+                <span class="tag" data-tag="Physiology">Physiology</span>
+              </div>
+              <div class="pub-abstract-wrap">
+                <p class="pub-abstract">Among 374 ethnically Tibetan women aged 46–86 living above 3,500 m in Mustang, Nepal, pre-menopausal women had higher oxygen saturation and ventilation while breathing room air, and stronger hypoxic ventilatory (HVR) and heart rate (HHRR) responses during acute isocapnic hypoxia, than post-menopausal women. Both responses tracked higher oxygen saturation in each group but declined with age only after menopause. Genetic analyses identified genotype–phenotype associations with end-tidal CO₂ in room air and with ventilation during hypoxia. The findings suggest hypoxic cardiorespiratory responses wane after menopause, as women's contributions to reproductive fitness shift from bearing children to supporting existing offspring.</p>
+                <button class="abstract-toggle">Read more</button>
+              </div>
+              <a class="pub-doi" href="https://doi.org/10.1113/JP290648" target="_blank">DOI →</a>
+            </div>
+          </div>
+
           <div class="pub-item" data-tags="Human Genetics|Genomics|Physiology" data-section="co">
-            <span class="pub-num">14</span>
+            <span class="pub-num">16</span>
             <div>
               <h3 class="pub-title">Dysregulated Fatty Acid Metabolism in Preeclampsia Among Highland Andeans: Insights Into Adaptive and Maladaptive Placental Metabolic Phenotypes</h3>
               <p class="pub-meta">O'Brien KA, Toledo-Jaldin L, Gu W, et al. &nbsp;·&nbsp; <em>FASEB Journal</em>, 39, e71254 (2025)</p>
@@ -760,7 +800,7 @@
           </div>
 
           <div class="pub-item" data-tags="Genomics|Physiology" data-section="co">
-            <span class="pub-num">15</span>
+            <span class="pub-num">17</span>
             <div>
               <h3 class="pub-title">Multidimensional analysis of twin sets during an intensive week-long meditation retreat: a pilot study</h3>
               <p class="pub-meta">Zuniga-Hertz JP, Simpson S, Chitetti R, Gu W, et al. &nbsp;·&nbsp; <em>Mindfulness</em>, 16:1634–1655 (2025)</p>
@@ -777,7 +817,7 @@
           </div>
 
           <div class="pub-item" data-tags="Medical Informatics" data-section="co">
-            <span class="pub-num">16</span>
+            <span class="pub-num">18</span>
             <div>
               <h3 class="pub-title">A modified method for measuring the calcaneal moment arm on weight-bearing computed tomography</h3>
               <p class="pub-meta">Zhu M, Sempson S, Gu W, et al. &nbsp;·&nbsp; <em>Journal of Foot and Ankle Research</em>, 18, 338–341 (2024)</p>
@@ -792,7 +832,7 @@
           </div>
 
           <div class="pub-item" data-tags="Medical Informatics" data-section="co">
-            <span class="pub-num">17</span>
+            <span class="pub-num">19</span>
             <div>
               <h3 class="pub-title">Different positions of weightbearing CT images can influence the hindfoot alignment evaluation using 2-dimensional methodology</h3>
               <p class="pub-meta">Zhu M, Gu W, Wang C, et al. &nbsp;·&nbsp; <em>Foot &amp; Ankle International</em>, 45, 1390–1396 (2024)</p>
@@ -807,7 +847,7 @@
           </div>
 
           <div class="pub-item" data-tags="Genomics" data-section="co">
-            <span class="pub-num">18</span>
+            <span class="pub-num">20</span>
             <div>
               <h3 class="pub-title">Development of multiplexed orthogonal base editor (MOBE) systems</h3>
               <p class="pub-meta">Cowan QT, Gu S, Gu W, et al. &nbsp;·&nbsp; <em>Nature Biotechnology</em> (2024)</p>
@@ -823,7 +863,7 @@
           </div>
 
           <div class="pub-item" data-tags="Human Genetics|Genetic Epidemiology|Genomics|Physiology" data-section="co">
-            <span class="pub-num">19</span>
+            <span class="pub-num">21</span>
             <div>
               <h3 class="pub-title">Genomic Selection Signals in Andean Highlanders Reveal Adaptive Placental Metabolic Phenotypes That Are Disrupted in Preeclampsia</h3>
               <p class="pub-meta">O'Brien KA, Gu W, Houck JA, et al. &nbsp;·&nbsp; <em>Hypertension</em>, 81, 319–329 (2024)</p>
@@ -841,7 +881,7 @@
           </div>
 
           <div class="pub-item" data-tags="Human Genetics|Genomics|Physiology" data-section="co">
-            <span class="pub-num">20</span>
+            <span class="pub-num">22</span>
             <div>
               <h3 class="pub-title">Tibetans exhibit lower hemoglobin concentration and decreased heart response to hypoxia with distinct CO₂ responses at intermediate altitude relative to Han Chinese</h3>
               <p class="pub-meta">Moya EA, Yu JJ, Brown S, Gu W, et al. &nbsp;·&nbsp; <em>Frontiers in Physiology</em> (2024)</p>
@@ -859,7 +899,7 @@
           </div>
 
           <div class="pub-item" data-tags="Medical Informatics" data-section="co">
-            <span class="pub-num">21</span>
+            <span class="pub-num">23</span>
             <div>
               <h3 class="pub-title">Content validation of the progressive collapsing foot deformity classification</h3>
               <p class="pub-meta">Zhu M, Maher MA, Gu W, et al. &nbsp;·&nbsp; <em>Journal of the Foot &amp; Ankle</em>, 17, 156–162 (2023)</p>
@@ -874,7 +914,7 @@
           </div>
 
           <div class="pub-item" data-tags="Genomics|Physiology" data-section="co">
-            <span class="pub-num">22</span>
+            <span class="pub-num">24</span>
             <div>
               <h3 class="pub-title">Inflammation biomarkers in OSA, chronic obstructive pulmonary disease, and chronic obstructive pulmonary disease/OSA overlap syndrome</h3>
               <p class="pub-meta">Sanchez-Azofra A, Gu W, Masso-Silva JA, et al. &nbsp;·&nbsp; <em>Journal of Clinical Sleep Medicine</em>, 19, 1447–1456 (2023)</p>
@@ -890,7 +930,7 @@
           </div>
 
           <div class="pub-item" data-tags="Physiology" data-section="co">
-            <span class="pub-num">23</span>
+            <span class="pub-num">25</span>
             <div>
               <h3 class="pub-title">In Silico Quantification of Intersubject Variability on Aerosol Deposition in the Oral Airway</h3>
               <p class="pub-meta">Borojeni AAT, Gu W, Asgharian B, et al. &nbsp;·&nbsp; <em>Pharmaceutics</em>, 15(1), 160 (2023)</p>
@@ -906,7 +946,7 @@
           </div>
 
           <div class="pub-item" data-tags="Physiology" data-section="co">
-            <span class="pub-num">24</span>
+            <span class="pub-num">26</span>
             <div>
               <h3 class="pub-title">Isovolemic hemodilution in chronic mountain sickness acutely worsens nocturnal oxygenation and sleep apnea severity</h3>
               <p class="pub-meta">Sanchez-Azofra A, Villafuerte FC, DeYoung PN, Gu W, et al. &nbsp;·&nbsp; <em>Journal of Clinical Sleep Medicine</em> (2022)</p>
@@ -922,7 +962,7 @@
           </div>
 
           <div class="pub-item" data-tags="Physiology" data-section="co">
-            <span class="pub-num">25</span>
+            <span class="pub-num">27</span>
             <div>
               <h3 class="pub-title">Influence of Alveolar Mixing and Multiple Breaths of Aerosol Intake on Particle Deposition in the Human Lungs</h3>
               <p class="pub-meta">Asgharian B, Price O, Borojeni AAT, Gu W, et al. &nbsp;·&nbsp; <em>Journal of Aerosol Science</em> (2022)</p>
@@ -938,7 +978,7 @@
           </div>
 
           <div class="pub-item" data-tags="Genomics|Physiology" data-section="co">
-            <span class="pub-num">26</span>
+            <span class="pub-num">28</span>
             <div>
               <h3 class="pub-title">Effects of mango and mint pod-based e-cigarette aerosol inhalation on inflammatory states of the brain, lung, heart, and colon in mice</h3>
               <p class="pub-meta">Moshensky A, Brand CS, Alhaddad H, Gu W, et al. &nbsp;·&nbsp; <em>eLife</em>, 11 (2022)</p>
@@ -955,7 +995,7 @@
           </div>
 
           <div class="pub-item" data-tags="Genomics|Physiology" data-section="co">
-            <span class="pub-num">27</span>
+            <span class="pub-num">29</span>
             <div>
               <h3 class="pub-title">Time Domains of Hypoxia Responses and -Omics Insights</h3>
               <p class="pub-meta">Yu JJ, Non AL, Heinrich EC, Gu W, et al. &nbsp;·&nbsp; <em>Frontiers in Physiology</em>, 13, 885295 (2022)</p>
@@ -972,7 +1012,7 @@
           </div>
 
           <div class="pub-item" data-tags="Medical Informatics" data-section="co">
-            <span class="pub-num">28</span>
+            <span class="pub-num">30</span>
             <div>
               <h3 class="pub-title">Diagnostic Accuracy of the Progressive Collapsing Foot Deformity (PCFD) Classification</h3>
               <p class="pub-meta">Li S, Zhu M, Gu W, et al. &nbsp;·&nbsp; <em>Foot &amp; Ankle International</em>, 43(6), 800–809 (2022)</p>
@@ -988,7 +1028,7 @@
           </div>
 
           <div class="pub-item" data-tags="Genomics|Physiology" data-section="co">
-            <span class="pub-num">29</span>
+            <span class="pub-num">31</span>
             <div>
               <h3 class="pub-title">Combined intermittent and sustained hypoxia is a novel and deleterious cardio-metabolic phenotype</h3>
               <p class="pub-meta">Zhen X, Moya EA, Gautane M, Gu W, et al. &nbsp;·&nbsp; <em>Sleep</em>, 45(6) (2022)</p>
@@ -1005,7 +1045,7 @@
           </div>
 
           <div class="pub-item" data-tags="Genomics|Physiology" data-section="co">
-            <span class="pub-num">30</span>
+            <span class="pub-num">32</span>
             <div>
               <h3 class="pub-title">Targeting Mitochondria and Metabolism in Acute Kidney Injury</h3>
               <p class="pub-meta">Li Y, Hepokoski M, Gu W, et al. &nbsp;·&nbsp; <em>Journal of Clinical Medicine</em>, 10(17): 3991 (2021)</p>
@@ -1037,6 +1077,7 @@
     const noResults    = document.getElementById('no-results');
     const labelFirst   = document.getElementById('label-first');
     const labelCo      = document.getElementById('label-co');
+    const totalPubs    = pubItems.length;
 
     let activeTags = new Set();
 
@@ -1069,9 +1110,9 @@
       });
 
       const total = visibleFirst + visibleCo;
-      resultsCount.textContent = total === 30
-        ? '30 publications'
-        : `${total} of 30 publications`;
+      resultsCount.textContent = total === totalPubs
+        ? `${totalPubs} publications`
+        : `${total} of ${totalPubs} publications`;
 
       noResults.style.display = total === 0 ? 'block' : 'none';
       labelFirst.style.display = visibleFirst === 0 ? 'none' : '';
