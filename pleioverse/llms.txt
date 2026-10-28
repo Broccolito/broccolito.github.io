@@ -44,7 +44,7 @@ library(pleioverse)
 
 set.seed(1)
 
-pleio <- run_pleiosim(
+pleio = run_pleiosim(
   n_phenotype = 3,
   n_participant = 10000,
   n_variant_pleiotropic = 10,
@@ -53,7 +53,7 @@ pleio <- run_pleiosim(
   heritability = c(0.1, 0.2, 0.3)
 )
 
-pleio <- run_pleiotest(pleio)
+pleio = run_pleiotest(pleio)
 head(pleio@results)
 ```
 
@@ -61,13 +61,13 @@ Run only the methods you need:
 
 ``` r
 
-pleio <- run_pleiosim(
+pleio = run_pleiosim(
   n_phenotype = 2,
   n_variant_nonpleiotropic = c(10, 10),
   heritability = c(0.2, 0.2)
 )
 
-pleio <- pleio |>
+pleio = pleio |>
   run_wald() |>
   run_vc() |>
   run_placo(i = 1, j = 2)
@@ -80,7 +80,7 @@ Combine existing p-value columns with
 
 ``` r
 
-pleio <- run_acat(pleio, cols = c("wald", "vc", "placo"))
+pleio = run_acat(pleio, cols = c("wald", "vc", "placo"))
 head(pleio@results$acat)
 ```
 
@@ -97,6 +97,7 @@ details.
 | Combine selected method results with ACAT | [Combining tests with ACAT](https://broccolito.github.io/pleioverse/articles/combining-tests-acat.html) |
 | Read one article per statistical method | [Method articles](https://broccolito.github.io/pleioverse/articles/) |
 | Look up function arguments and return values | [Function reference](https://broccolito.github.io/pleioverse/reference/) |
+| Reproduce the pleiotropy-classification benchmark | [Pleiotropy Method Performance Grid](https://broccolito.github.io/pleioverse/simulation/docs/full_simulation_spec.md) |
 
 ## Main Functions
 
@@ -132,11 +133,21 @@ Install the package locally from the repository root:
 R CMD INSTALL .
 ```
 
-Run the test suite:
+Run the complete test suite against a fresh temporary installation:
 
 ``` sh
-Rscript -e 'testthat::test_local(".")'
+./tests/run-package-tests.sh
 ```
+
+This clean-installs `pleioverse` into a temporary library and runs only
+the package’s R and C++ `testthat` suite. It does not parse, submit, or
+execute the separate `experiments/` or `simulation/` campaign scripts.
+See
+[`tests/README.md`](https://github.com/Broccolito/pleioverse/blob/main/tests/README.md)
+for the purpose of each test file.
+
+For a faster in-place development cycle, use
+`Rscript -e 'testthat::test_local(".")'`.
 
 Build the documentation website:
 

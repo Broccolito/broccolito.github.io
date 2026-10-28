@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Running the Test Suite • pleioverse</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Running the Test Suite">
@@ -52,14 +52,14 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Running the Test Suite</h1>
-
-
+            
+      
       <small class="dont-index">Source: <a href="https://github.com/broccolito/pleioverse/blob/HEAD/vignettes/running-tests.Rmd" class="external-link"><code>vignettes/running-tests.Rmd</code></a></small>
       <div class="d-none name"><code>running-tests.Rmd</code></div>
     </div>
 
-
-
+    
+    
 <p>The testing API works on a <code>pleio</code> object created by
 <code><a href="../reference/run_pleiosim.html">run_pleiosim()</a></code> or by an object with compatible
 summary-statistic slots.</p>
@@ -83,7 +83,7 @@ MPAT/MTAR methods reuse those shared inputs through the C++
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://broccolito.github.io/" class="external-link">pleioverse</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">21</span><span class="op">)</span></span>
-<span><span class="va">pleio</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pleiosim.html">run_pleiosim</a></span><span class="op">(</span></span>
+<span><span class="va">pleio</span> <span class="op">=</span> <span class="fu"><a href="../reference/run_pleiosim.html">run_pleiosim</a></span><span class="op">(</span></span>
 <span>  n_phenotype <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  n_participant <span class="op">=</span> <span class="fl">1000</span>,</span>
 <span>  n_variant_pleiotropic <span class="op">=</span> <span class="fl">5</span>,</span>
@@ -91,7 +91,7 @@ MPAT/MTAR methods reuse those shared inputs through the C++
 <span>  n_variant_null <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  heritability <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">pleio</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pleiotest.html">run_pleiotest</a></span><span class="op">(</span><span class="va">pleio</span>, mpat <span class="op">=</span> <span class="cn">TRUE</span>, pleiotropy <span class="op">=</span> <span class="cn">TRUE</span>, i <span class="op">=</span> <span class="fl">1</span>, j <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">pleio</span> <span class="op">=</span> <span class="fu"><a href="../reference/run_pleiotest.html">run_pleiotest</a></span><span class="op">(</span><span class="va">pleio</span>, mpat <span class="op">=</span> <span class="cn">TRUE</span>, pleiotropy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pleio</span><span class="op">@</span><span class="va">results</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -100,9 +100,9 @@ MPAT/MTAR methods reuse those shared inputs through the C++
 <p>Every individual method returns the modified <code>pleio</code>
 object, so calls can be chained.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pleio</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_wald.html">run_wald</a></span><span class="op">(</span><span class="va">pleio</span><span class="op">)</span></span>
-<span><span class="va">pleio</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_vc.html">run_vc</a></span><span class="op">(</span><span class="va">pleio</span><span class="op">)</span></span>
-<span><span class="va">pleio</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_placo.html">run_placo</a></span><span class="op">(</span><span class="va">pleio</span>, i <span class="op">=</span> <span class="fl">1</span>, j <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">pleio</span> <span class="op">=</span> <span class="fu"><a href="../reference/run_wald.html">run_wald</a></span><span class="op">(</span><span class="va">pleio</span><span class="op">)</span></span>
+<span><span class="va">pleio</span> <span class="op">=</span> <span class="fu"><a href="../reference/run_vc.html">run_vc</a></span><span class="op">(</span><span class="va">pleio</span><span class="op">)</span></span>
+<span><span class="va">pleio</span> <span class="op">=</span> <span class="fu"><a href="../reference/run_placo.html">run_placo</a></span><span class="op">(</span><span class="va">pleio</span>, i <span class="op">=</span> <span class="fl">1</span>, j <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">pleio</span><span class="op">@</span><span class="va">results</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -125,13 +125,19 @@ because it combines columns that already exist in
 <div class="section level2">
 <h2 id="pairwise-pleiotropy-tests">Pairwise Pleiotropy Tests<a class="anchor" aria-label="anchor" href="#pairwise-pleiotropy-tests"></a>
 </h2>
-<p><code><a href="../reference/run_placo.html">run_placo()</a></code>, <code><a href="../reference/run_pgctest.html">run_pgctest()</a></code>,
-<code><a href="../reference/run_maiup.html">run_maiup()</a></code>, and <code><a href="../reference/run_conjfdr.html">run_conjfdr()</a></code> use phenotype
-indices <code>i</code> and <code>j</code>. A single result column refers
-only to the pair used in that call.</p>
+<p>The individual <code><a href="../reference/run_placo.html">run_placo()</a></code>, <code><a href="../reference/run_pgctest.html">run_pgctest()</a></code>,
+<code><a href="../reference/run_maiup.html">run_maiup()</a></code>, and <code><a href="../reference/run_conjfdr.html">run_conjfdr()</a></code> functions use
+phenotype indices <code>i</code> and <code>j</code>. A result column
+from one of those direct calls refers only to the selected pair.</p>
+<p>By contrast, <code><a href="../reference/run_pleiotest.html">run_pleiotest()</a></code> runs each of these four
+methods over every phenotype pair and stores the maximum (least
+significant) value for each variant. This all-pairs intersection rule
+requires evidence in every pair. The <code>i</code> and <code>j</code>
+arguments to <code><a href="../reference/run_pleiotest.html">run_pleiotest()</a></code> remain only for backward
+compatibility and no longer restrict its orchestration.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pair12</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_placo.html">run_placo</a></span><span class="op">(</span><span class="va">pleio</span>, i <span class="op">=</span> <span class="fl">1</span>, j <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="va">pair13</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_placo.html">run_placo</a></span><span class="op">(</span><span class="va">pleio</span>, i <span class="op">=</span> <span class="fl">1</span>, j <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">pair12</span> <span class="op">=</span> <span class="fu"><a href="../reference/run_placo.html">run_placo</a></span><span class="op">(</span><span class="va">pleio</span>, i <span class="op">=</span> <span class="fl">1</span>, j <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">pair13</span> <span class="op">=</span> <span class="fu"><a href="../reference/run_placo.html">run_placo</a></span><span class="op">(</span><span class="va">pleio</span>, i <span class="op">=</span> <span class="fl">1</span>, j <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -144,7 +150,7 @@ only to the pair used in that call.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

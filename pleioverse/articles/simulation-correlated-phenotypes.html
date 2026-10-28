@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Simulating Correlated Phenotypes • pleioverse</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Simulating Correlated Phenotypes">
@@ -52,18 +52,19 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Simulating Correlated Phenotypes</h1>
-
-
+            
+      
       <small class="dont-index">Source: <a href="https://github.com/broccolito/pleioverse/blob/HEAD/vignettes/simulation-correlated-phenotypes.Rmd" class="external-link"><code>vignettes/simulation-correlated-phenotypes.Rmd</code></a></small>
       <div class="d-none name"><code>simulation-correlated-phenotypes.Rmd</code></div>
     </div>
 
-
-
+    
+    
 <p><code>pleioverse</code> separates the genetic-correlation target from
 the non-heritable matrix used in the environmental-noise transform. They
-are controlled separately, but only the genetic target is fitted against
-a realized cross-phenotype quantity.</p>
+are controlled separately. Genetic correlation is fitted through the
+effect matrix, while non-heritable correlation is realized among traits
+measured on overlapping participants.</p>
 <div class="section level2">
 <h2 id="heritable-correlation">Heritable Correlation<a class="anchor" aria-label="anchor" href="#heritable-correlation"></a>
 </h2>
@@ -82,10 +83,11 @@ G_{ij} = \sum_{v=1}^{n_{var}} b_{iv} b_{jv} 2 p_{vi}(1 - p_{vi}),
 R^{(g)}_{ij} = \frac{G_{ij}}{\sqrt{G_{ii}G_{jj}}}.
 </annotation></semantics></math></p>
 <p>With the default effect-size template, the simulator adjusts the
-leading all-nonzero pleiotropic columns so this realized genetic
-correlation is close to the target unless a custom effect-size matrix is
-supplied. If you pass a custom template, the same fitting step can only
-adjust the leading columns that are nonzero for every phenotype.</p>
+leading pleiotropic columns so this realized genetic correlation is
+close to the target unless a custom effect-size matrix is supplied. A
+leading variant is treated as pleiotropic when it is nonzero for at
+least two phenotypes, so the same fitting step supports partial
+pleiotropy such as 2-of-5.</p>
 </div>
 <div class="section level2">
 <h2 id="non-heritable-correlation">Non-Heritable Correlation<a class="anchor" aria-label="anchor" href="#non-heritable-correlation"></a>
@@ -94,19 +96,17 @@ adjust the leading columns that are nonzero for every phenotype.</p>
 environmental-noise transform. The C++ engine eigendecomposes that
 matrix and multiplies standard normal draws by a square-root
 transform:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>=</mo><mi>U</mi><mi>V</mi><msup><mi mathvariant="normal">Λ</mi><mrow><mn>1</mn><mi>/</mi><mn>2</mn></mrow></msup><mo>,</mo></mrow><annotation encoding="application/x-tex">
-E = U V \Lambda^{1/2},
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>=</mo><mi>U</mi><mi>V</mi><msup><mi mathvariant="normal">Λ</mi><mrow><mn>1</mn><mi>/</mi><mn>2</mn></mrow></msup><msup><mi>V</mi><mi mathvariant="sans-serif">𝖳</mi></msup><mo>,</mo></mrow><annotation encoding="application/x-tex">
+E = U V \Lambda^{1/2} V^\mathsf{T},
 </annotation></semantics></math></p>
 <p>where rows of <code>U</code> are independent standard normal draws.
 The phenotype-specific environmental column is then standardized and
 rescaled to match the requested heritability ratio.</p>
-<p>One implementation detail matters for interpretation: the simulator
-creates a fresh environmental-noise matrix separately for each phenotype
-cohort and then uses only the phenotype-specific column for that cohort.
-Because the off-diagonal columns from each draw are not carried into the
-other final phenotypes, this matrix should not be interpreted as a
-guaranteed observed residual correlation matrix, even when cohorts fully
-overlap.</p>
+<p>The simulator creates one transformed environmental matrix for each
+exact cohort-intersection group. Traits measured on the same participant
+use columns from the same row, so the target residual correlation is
+expressed only through subject overlap. With disjoint cohorts there is
+no cross-GWAS residual covariance to realize.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/create_nonheritable_correlation_matrix.html">create_nonheritable_correlation_matrix</a></span><span class="op">(</span>n_phenotype <span class="op">=</span> <span class="fl">3</span>, uniform_nonheritable_correlation <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -136,7 +136,7 @@ matrix directly and skips fitting pleiotropic effect multipliers to the
 heritable-correlation target.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">13</span><span class="op">)</span></span>
-<span><span class="va">pleio</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pleiosim.html">run_pleiosim</a></span><span class="op">(</span></span>
+<span><span class="va">pleio</span> <span class="op">=</span> <span class="fu"><a href="../reference/run_pleiosim.html">run_pleiosim</a></span><span class="op">(</span></span>
 <span>  n_phenotype <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  n_participant <span class="op">=</span> <span class="fl">1000</span>,</span>
 <span>  heritable_correlation <span class="op">=</span> <span class="fl">0.5</span>,</span>
@@ -158,7 +158,7 @@ heritable-correlation target.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

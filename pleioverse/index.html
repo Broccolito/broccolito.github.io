@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Fast pleiotropy simulation and testing in R • pleioverse</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><link href="extra.css" rel="stylesheet">
 <meta property="og:title" content="Fast pleiotropy simulation and testing in R">
@@ -77,7 +77,7 @@
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">pleio</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pleiosim.html">run_pleiosim</a></span><span class="op">(</span></span>
+<span><span class="va">pleio</span> <span class="op">=</span> <span class="fu"><a href="reference/run_pleiosim.html">run_pleiosim</a></span><span class="op">(</span></span>
 <span>  n_phenotype <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  n_participant <span class="op">=</span> <span class="fl">10000</span>,</span>
 <span>  n_variant_pleiotropic <span class="op">=</span> <span class="fl">10</span>,</span>
@@ -86,17 +86,17 @@
 <span>  heritability <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">pleio</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pleiotest.html">run_pleiotest</a></span><span class="op">(</span><span class="va">pleio</span><span class="op">)</span></span>
+<span><span class="va">pleio</span> <span class="op">=</span> <span class="fu"><a href="reference/run_pleiotest.html">run_pleiotest</a></span><span class="op">(</span><span class="va">pleio</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pleio</span><span class="op">@</span><span class="va">results</span><span class="op">)</span></span></code></pre></div>
 <p>Run only the methods you need:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pleio</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pleiosim.html">run_pleiosim</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">pleio</span> <span class="op">=</span> <span class="fu"><a href="reference/run_pleiosim.html">run_pleiosim</a></span><span class="op">(</span></span>
 <span>  n_phenotype <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  n_variant_nonpleiotropic <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">10</span><span class="op">)</span>,</span>
 <span>  heritability <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.2</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">pleio</span> <span class="op">&lt;-</span> <span class="va">pleio</span> <span class="op">|&gt;</span></span>
+<span><span class="va">pleio</span> <span class="op">=</span> <span class="va">pleio</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/run_wald.html">run_wald</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/run_vc.html">run_vc</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/run_placo.html">run_placo</a></span><span class="op">(</span>i <span class="op">=</span> <span class="fl">1</span>, j <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
@@ -104,7 +104,7 @@
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pleio</span><span class="op">@</span><span class="va">results</span><span class="op">)</span></span></code></pre></div>
 <p>Combine existing p-value columns with <a href="https://broccolito.github.io/pleioverse/reference/run_acat.html"><code>run_acat()</code></a>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pleio</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_acat.html">run_acat</a></span><span class="op">(</span><span class="va">pleio</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"wald"</span>, <span class="st">"vc"</span>, <span class="st">"placo"</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">pleio</span> <span class="op">=</span> <span class="fu"><a href="reference/run_acat.html">run_acat</a></span><span class="op">(</span><span class="va">pleio</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"wald"</span>, <span class="st">"vc"</span>, <span class="st">"placo"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pleio</span><span class="op">@</span><span class="va">results</span><span class="op">$</span><span class="va">acat</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -140,6 +140,10 @@
 <tr>
 <td>Look up function arguments and return values</td>
 <td><a href="https://broccolito.github.io/pleioverse/reference/">Function reference</a></td>
+</tr>
+<tr>
+<td>Reproduce the pleiotropy-classification benchmark</td>
+<td><a href="simulation/docs/full_simulation_spec.html">Pleiotropy Method Performance Grid</a></td>
 </tr>
 </tbody>
 </table>
@@ -209,8 +213,10 @@
 </h2>
 <p>Install the package locally from the repository root:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="ex">R</span> CMD INSTALL .</span></code></pre></div>
-<p>Run the test suite:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="ex">Rscript</span> <span class="at">-e</span> <span class="st">'testthat::test_local(".")'</span></span></code></pre></div>
+<p>Run the complete test suite against a fresh temporary installation:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="ex">./tests/run-package-tests.sh</span></span></code></pre></div>
+<p>This clean-installs <code>pleioverse</code> into a temporary library and runs only the package’s R and C++ <code>testthat</code> suite. It does not parse, submit, or execute the separate <code>experiments/</code> or <code>simulation/</code> campaign scripts. See <a href="https://github.com/Broccolito/pleioverse/blob/main/tests/README.md" class="external-link"><code>tests/README.md</code></a> for the purpose of each test file.</p>
+<p>For a faster in-place development cycle, use <code>Rscript -e 'testthat::test_local(".")'</code>.</p>
 <p>Build the documentation website:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="ex">Rscript</span> <span class="at">-e</span> <span class="st">'pkgdown::build_site()'</span></span></code></pre></div>
 <p>The package uses C++17, <code>Rcpp</code>, and <code>RcppArmadillo</code> for the computational core. Files in <code>dev/</code> are local parity, baseline, and timing scripts; they are not part of the installed R package.</p>
@@ -309,7 +315,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

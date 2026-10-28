@@ -1,5 +1,5 @@
 pandoc: '3.10'
-pkgdown: 2.2.0
+pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   combining-tests-acat: combining-tests-acat.html
@@ -44,7 +44,7 @@ articles:
   simulation-genotypes: simulation-genotypes.html
   simulation-phenotypes: simulation-phenotypes.html
   understanding-output-p-values: understanding-output-p-values.html
-last_built: 2026-07-09T09:06Z
+last_built: 2026-08-03T22:49Z
 urls:
   reference: https://broccolito.github.io/pleioverse/reference
   article: https://broccolito.github.io/pleioverse/articles
